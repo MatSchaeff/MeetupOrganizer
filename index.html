@@ -1,0 +1,512 @@
+<html>
+
+<head>
+    <title>neXtProt protein sequence viewer</title>
+    <meta charset="UTF-8">
+    <!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="../css/style.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="index.css"> -->
+
+    <script src="jquery.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script> -->
+
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-print-1.6.1/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-print-1.6.1/datatables.min.js"></script> -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/8f99321293.js" crossorigin="anonymous"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/simple-parallax-js@5.2.0/dist/simpleParallax.min.js"></script>
+</head>
+<style>
+    .dataTables_info {
+        float: left;
+        padding-top: 10px !important;
+    }
+
+    #example_filter {
+        float: right;
+    }
+
+    .dt-buttons {
+        float: left;
+        margin-bottom: 5px;
+        margin-right:5px;
+    }
+
+    tbody td.paymentMethod {
+        padding: 0px;
+        background-color: #eee;
+    }
+
+    td .btn-group {
+        width: 100%;
+    }
+
+    .btn-group.special {
+        display: flex;
+    }
+
+    .special .btn {
+        flex: 1
+    }
+
+    .btn-payment {
+        color: #fff;
+        background-color: #adb6bd;
+        border-color: #adb6bd;
+    }
+
+    .btn-light:not(:disabled):not(.disabled),
+    .btn-light:not(:disabled):not(.disabled),
+    .show>.btn-light.dropdown-toggle {
+        color: #999;
+        background-color: #eee;
+        border-color: #eee;
+    }
+
+    .btn-light:not(:disabled):not(.disabled) img {
+        filter: grayscale(100%);
+    }
+
+    .btn-light:not(:disabled):not(.disabled).active img {
+        filter: grayscale(0%);
+    }
+
+    .btn-light:not(:disabled):not(.disabled).active,
+    .btn-light:not(:disabled):not(.disabled):active,
+    .show>.btn-light.dropdown-toggle {
+        color: black;
+        background-color: white;
+        border-color: white;
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .cash:not(:disabled):not(.disabled).active,
+    .cash:not(:disabled):not(.disabled):active,
+    .show>.cash.dropdown-toggle {
+        color: darkviolet;
+        background-color: white;
+        border-color: white;
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    /* .unknown:not(:disabled):not(.disabled).active,
+    .unknown:not(:disabled):not(.disabled):active,
+    .show>.revolut.dropdown-toggle {
+        color: #fff;
+        background-color: #545b62;
+        border-color: #545b62;
+    }
+
+    .revolut:not(:disabled):not(.disabled).active,
+    .revolut:not(:disabled):not(.disabled):active,
+    .show>.revolut.dropdown-toggle {
+        color: #fff;
+        background-color: #bd2130;
+        border-color: #b21f2d;
+    }
+
+    .cash:not(:disabled):not(.disabled).active,
+    .cash:not(:disabled):not(.disabled):active,
+    .show>.cash.dropdown-toggle {
+        color: #fff;
+        background-color: #0062cc;
+        border-color: #005cbf;
+    }
+
+    .twint:not(:disabled):not(.disabled).active,
+    .twint:not(:disabled):not(.disabled):active,
+    .show>.twint.dropdown-toggle {
+        color: #fff;
+        background-color: #1e7e34;
+        border-color: #1c7430;
+    } */
+
+    body {
+        /* width:100%; */
+        /* height:400px; */
+        /* background: url(https://media.newitts.com/cdn/images/backgrounds/badminton.jpg);
+        background-repeat: no-repeat; */
+        background-color: #f3f3f3;
+        font-family: "Helvetica";
+    }
+
+
+    #tableContainer,
+    #formContainer {
+        background-color: white;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        margin: 20px 0px;
+        border-radius: 2px;
+    }
+
+    #tableContainer {
+        padding: 30px;
+    }
+
+    #formContainer {
+        border: 0px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    #meetupHeader {
+        /* position: relative;
+        width: 100%;
+        height: 400px;
+        background-repeat: no-repeat;
+        background: url(https://s3-eu-west-2.amazonaws.com/prod-everyoneactive-wp/wp-content/uploads/2018/07/09102653/Badminton.jpg) 50% 50%; */
+
+        background-image: url("https://s3-eu-west-2.amazonaws.com/prod-everyoneactive-wp/wp-content/uploads/2018/07/09102653/Badminton.jpg");
+        /* background-position-y:-200px;
+        background-position-x:50%; */
+        /* Set a specific height */
+        height: 400px;
+        background-position-y: -330px;
+
+        /* Create the parallax scrolling effect */
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+
+    h1 {
+        font-size: 56px;
+        text-align: left;
+        border-bottom: 1px solid black;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-size: 28px;
+        text-align: left;
+    }
+
+    #headerTitle {
+        margin-top: 150px;
+        position: relative;
+        display: inline-block;
+        margin-right: 400px;
+    }
+
+    .pc_cell,.pc_cell_header {
+        /* border: 1px solid #ccc; */
+        padding:6px;
+        font-size: 18px;
+        font-weight: 700;
+        /* height:45px; */
+    }
+    .pc_cell_header{
+        /* padding: */
+        border-bottom:1px solid #ccc;
+    }
+
+    #paymentCounter {
+        width: 200px;
+        float: right;
+        text-align: center;
+        display: flex;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+
+    #paymentCounter>div {
+        flex: 1
+    }
+</style>
+
+<body>
+    <div id="meetupHeader" style="text-align: center;">
+        <div id="headerTitle">
+            <h1>Geneva Sports Club</h1>
+            <h2>Meetup Online Organizer</h2>
+        </div>
+    </div>
+    <!-- <div id="temp" style="height:300px;">
+        <img class="thumbnail" src="https://s3-eu-west-2.amazonaws.com/prod-everyoneactive-wp/wp-content/uploads/2018/07/09102653/Badminton.jpg" alt="image">
+    </div> -->
+    <div class="row justify-content-center">
+        <div id="div2" class="col-md-8 col-sm-12">
+            <!-- <div id="formContainer">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <h5 style="margin-bottom:20px">Import the csv file from Meetup :</h5>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="filename">
+                                <label class="custom-file-label" for="filename">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <div id="formContainer" class="card mb-12">
+                <div class="row no-gutters">
+                    <div class="col-md-2 col-sm-12">
+                        <div
+                            style="display: flex;justify-content: center;align-items: center; height:100%;background-color: #8bcea9;">
+                            <span style="padding:15px;"><i style="font-size: 72px;"
+                                    class="fas fa-file-import"></i></span>
+                        </div>
+                        <!-- <img src="..." class="card-img" alt="..."> -->
+                    </div>
+                    <div class="col-md-10 col-sm-12">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-weight:700;">Import CSV from Meetup</h5>
+                            <p class="card-text">If you are an administrator, you have access to the list of participant
+                                in the meetup event.
+                                To get the csv containing the list of person, go to the url of the
+                                event, and add "csv" to the url. </p>
+                            <p><strong>Example : </strong> <a
+                                    href="https://www.meetup.com/fr-FR/Geneva-Badminton-Club/events/267107077/csv">https://www.meetup.com/fr-FR/Geneva-Badminton-Club/events/267107077/csv</a>.
+                            </p>
+                            <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                            <div>
+                                <div class="col-md-8 col-sm-12">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Upload</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="filename">
+                                            <label class="custom-file-label" for="filename">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tableContainer">
+                <div style="margin-bottom:20px;height:40px;">
+                    <div id="paymentCounter">
+                        <div>
+                            <div class="pc_cell_header">
+                                <span style="color:darkviolet"><i style="font-size: 24px;" class="fas fa-dollar-sign"></i></span>
+                            </div>
+                            <div class="pc_cell">8</div>
+                        </div>
+                        <div>
+                            <div class="pc_cell_header">
+                                <img style="width:24px"
+                                    src="http://download.softwsp.com/sites/8/2018/05/icon-revolut.png">
+                            </div>
+                            <div class="pc_cell">8</div>
+                        </div>
+                        <div>
+                            <div class="pc_cell_header">
+                                <img style="width:21px" src="./twint-logo.png">
+                            </div>
+                            <div class="pc_cell">8</div>
+                        </div>
+                    </div>
+                    <h4 style="font-weight:700;">Liste of players</h4>
+                </div>
+                <table id="example" class="table table-striped table-bordered" width="100%"></table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var image = document.getElementsByClassName('thumbnail');
+        new simpleParallax(image, {
+            scale: 1.5
+        });
+        var dataRaw = [
+            { "Nom": "Ajay SH", "ID utilisateur": "user 221075738", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "01 décembre 2019 19:00", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/221075738/" },
+            { "Nom": "Alexis Thibaut", "ID utilisateur": "user 214102016", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 18:52", "Rejoindre le groupe le": "29 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/214102016/" },
+            { "Nom": "benoit bureau", "ID utilisateur": "user 297068134", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "+1", "Répondu le": "11 décembre 2019 11:49", "Rejoindre le groupe le": "19 novembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/297068134/" },
+            { "Nom": "David", "ID utilisateur": "user 200886558", "Titre": "Organisateur", "Animateur ponctuel": "Oui", "S'inscrire": "Oui", "Invité(e)s": "+1", "Répondu le": "17 décembre 2019 17:31", "Rejoindre le groupe le": "26 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/200886558/" },
+            { "Nom": "David Nielsen", "ID utilisateur": "user 297472185", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 13:41", "Rejoindre le groupe le": "26 novembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/297472185/" },
+            { "Nom": "Haide", "ID utilisateur": "user 245676710", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 13:10", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/245676710/" },
+            { "Nom": "Houcem ben mahfoudh", "ID utilisateur": "user 210788793", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "17 décembre 2019 17:41", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/210788793/" },
+            { "Nom": "Irina", "ID utilisateur": "user 101590292", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 11:09", "Rejoindre le groupe le": "15 octobre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/101590292/" },
+            { "Nom": "Javier Calderon", "ID utilisateur": "user 255436533", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 10:36", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/255436533/" },
+            { "Nom": "JM", "ID utilisateur": "user 280105035", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 18:13", "Rejoindre le groupe le": "30 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/280105035/" },
+            { "Nom": "Laurent", "ID utilisateur": "user 275222840", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 10:40", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/275222840/" },
+            { "Nom": "Matt Schaeff'", "ID utilisateur": "user 292454041", "Titre": "", "Animateur ponctuel": "Oui", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 12:17", "Rejoindre le groupe le": "29 septembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/292454041/" },
+            { "Nom": "Matthieu Bernard", "ID utilisateur": "user 187133994", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "13 décembre 2019 15:25", "Rejoindre le groupe le": "16 novembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/187133994/" },
+            { "Nom": "Sandrine", "ID utilisateur": "user 252368549", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "12 décembre 2019 08:52", "Rejoindre le groupe le": "10 septembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/252368549/" }
+        ]
+        // $("#filename").change(function (e) {
+        // var ext = $("input#filename").val().split(".").pop().toLowerCase();
+        // if ($.inArray(ext, ["csv"]) == -1) {
+        //     alert('Upload CSV');
+        //     return false;
+        // }
+        // if (e.target.files != undefined) {
+        //     var reader = new FileReader();
+        //     reader.onload = function (e) {
+        //         var lines = e.target.result.split('\r\n');
+        //         for (i = 0; i < lines.length; ++i) {
+        //             $('div').append('<br>' + lines[i]);
+        //         }
+        //     };
+        //     reader.readAsText(e.target.files.item(0));
+        // }
+        // return false;
+        var fileInput = document.getElementById("filename");
+        function csvJSON(csv) {
+            var lines = csv.split("\n");
+            var result = [];
+            var headers = lines[0].split("\t");
+            for (var i = 1; i < lines.length; i++) {
+                var obj = {};
+                var currentline = lines[i].split("\t");
+                for (var j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = currentline[j];
+                }
+                result.push(obj);
+            }
+            return JSON.stringify(result); //JSON
+            // return result; //JSON
+        }
+
+        readFile = function () {
+            var reader = new FileReader();
+            reader.onload = function () {
+
+                var test2 = csvJSON(reader.result);
+                var test = csvJSON(reader.result.trim());
+                console.log("test2", test2);
+                console.log("test", test);
+                createTable(test);
+            };
+            // start reading the file. When it is done, calls the onload event defined above.
+            reader.readAsText(fileInput.files[0]);
+        };
+
+        fileInput.addEventListener('change', readFile);
+
+        // });
+
+        function createTable(data) {
+            $(document).ready(function () {
+                var table = $('#example').DataTable({
+                    dom: '<"top"Bi>rt<"bottom"><"clear">',
+                    // buttons: [
+                    //     'pdf','print'
+                    // ],
+                    buttons: [
+                        {
+                            extend: 'print',
+                            exportOptions: { orthogonal: 'export' }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: { orthogonal: 'export' }
+                        }
+                    ],
+                    data: data,
+                    paging: false,
+                    order: [[1, "asc"], [2, "asc"]],
+                    // columns: [
+                    //     { title: "Name", data: "Nom" },
+                    //     { title: "Registered on", data: "Répondu le" }
+                    // ],
+                    columnDefs: [
+                        // {
+                        //     targets: 2,
+                        //     title: "Cash",
+                        //     className: "paymentMethod",
+                        //     defaultContent: '<button type="button" class="btn btn-primary">Cash</button>'
+                        // },
+                        {
+                            targets: 0,
+                            title: "Name",
+                            data: "Nom"
+                        },
+                        {
+                            targets: 1,
+                            title: "Registered on",
+                            data: "Répondu le"
+                        },
+                        {
+                            targets: 2,
+                            title: "Payment method",
+                            className: "paymentMethod",
+                            defaultContent: '<div class="btn-group btn-group-toggle special" data-toggle="buttons">' +
+                                '<label class="btn btn-light unknown active"><input type="radio" name="options" id="option1" autocomplete="off" value="unknown" checked><span><i style="font-size: 24px;" class="far fa-question-circle"></i></span></label>' +
+                                '<label class="btn btn-light cash"><input type="radio" name="options" id="option2" autocomplete="off" value="cash"><span><i style="font-size: 24px;" class="fas fa-dollar-sign"></i></span></label>' +
+                                '<label class="btn btn-light revolut"><input type="radio" name="options" id="option3" autocomplete="off" value="revolut"><img style="width:24px" src="http://download.softwsp.com/sites/8/2018/05/icon-revolut.png"></label>' +
+                                '<label class="btn btn-light twint"><input type="radio" name="options" id="option4" autocomplete="off" value="twint"><img style="width:22px" src="./twint-logo.png"></label>' +
+                                '</div>',
+                            data: {
+                                _: "2.display",
+                                sort: "2.@data-order",
+                                type: "2.@data-order"
+                            },
+                            render: function (data, type, row, meta) {
+                                if (type == "export") {
+                                    return row["2"]["@data-order"];
+                                }
+                                return data;
+                            },
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                var name = rowData["Nom"][0] === "M" ? 2 : 4;
+                                var name = 4;
+                                $(td).attr('data-order', "unknown");
+                            }
+                        },
+                        // {
+                        //     targets: 3,
+                        //     data:
+                        //     title: "Image",
+                        //     render: function ( data, type, row, meta ) {
+                        //     //     console.log("lol",data,row,meta);
+                        //     //     if(type == 'sort'){
+                        //     //         return row["Nom"][0] === "M" ? 2 : 4;
+                        //     //     }
+                        //     //     return data;
+                        //     //     // return type == 'sort' ? "unknown" : data
+                        //     // }
+                        // },
+                    ]
+                });
+                table.rows().invalidate('dom').draw();
+                var orderpayment = {
+                    "cash": 1,
+                    "revolut": 2,
+                    "twint": 3,
+                    "unknown": 4
+                }
+                $(".btn-group-toggle input:radio").on('change', function () {
+                    let val = $(this).val();
+                    console.log("val", val);
+                    var parent = this.parentNode.parentNode.parentNode;
+                    $(parent).attr("data-order", val);
+
+                    table.row(parent.parentNode).invalidate('dom');
+                })
+            });
+        }
+        var tt = "11 décembre 2019 19:00"
+        console.log(tt);
+        console.log(dataRaw[0]);
+        createTable(dataRaw);
+
+    </script>
+
+
+</body>
+
+</html>

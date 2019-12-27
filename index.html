@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>neXtProt protein sequence viewer</title>
+    <title>Meetup Organizer</title>
     <meta charset="UTF-8">
     <!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"> -->
     <!-- <link rel="stylesheet" type="text/css" href="../css/style.css"> -->
@@ -40,7 +40,7 @@
     .dt-buttons {
         float: left;
         margin-bottom: 5px;
-        margin-right:5px;
+        margin-right: 5px;
     }
 
     tbody td.paymentMethod {
@@ -139,6 +139,10 @@
         background-repeat: no-repeat; */
         background-color: #f3f3f3;
         font-family: "Helvetica";
+
+        /* background-image: url("https://previews.123rf.com/images/logvinyk/logvinyk1609/logvinyk160910024/65059423-shuttlecock-icon-sign-seamless-pattern-with-geometric-texture-vector-illustration.jpg");
+        background-repeat:repeat;
+        background-size:200px; */
     }
 
 
@@ -173,20 +177,32 @@
         background-position-x:50%; */
         /* Set a specific height */
         height: 400px;
-        background-position-y: -330px;
+        background-position-y: -200px;
 
         /* Create the parallax scrolling effect */
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-size: cover;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1)
+            /* align-items: center; */
+
+    }
+
+    #meetupHeader>div,
+    body>div.row {
+        margin: 0px;
     }
 
 
     h1 {
-        font-size: 56px;
+        font-size: 48px;
         text-align: left;
         border-bottom: 1px solid black;
         margin-bottom: 20px;
+        letter-spacing: 1px;
     }
 
     h2 {
@@ -195,22 +211,47 @@
     }
 
     #headerTitle {
-        margin-top: 150px;
-        position: relative;
+        /* margin-top: 150px;
+        position: relative; */
         display: inline-block;
-        margin-right: 400px;
+        /* margin-right: 400px; */
     }
 
-    .pc_cell,.pc_cell_header {
+    .titleBig {
+        font-size: 72px;
+    }
+
+    .pc_cell,
+    .pc_cell_header {
         /* border: 1px solid #ccc; */
-        padding:6px;
+        padding: 6px;
         font-size: 18px;
         font-weight: 700;
         /* height:45px; */
     }
-    .pc_cell_header{
+
+    .pc_cell_header {
         /* padding: */
-        border-bottom:1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .pc_cell {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .pc_cell.cash_count {
+        background-color: darkviolet;
+        color: white;
+    }
+
+    .pc_cell.revolut_count {
+        background-color: #01cef2;
+        color: white;
+    }
+
+    .pc_cell.twint_count {
+        background-color: #01d76f;
+        color: white;
     }
 
     #paymentCounter {
@@ -224,20 +265,66 @@
     #paymentCounter>div {
         flex: 1
     }
+
+    .sp {
+        width: 32px;
+        height: 32px;
+        clear: both;
+        margin: 20px auto;
+    }
+
+    /* Spinner Circle Rotation */
+    .sp-circle {
+        border: 4px rgba(0, 0, 0, 0.25) solid;
+        border-top: 4px black solid;
+        border-radius: 50%;
+        -webkit-animation: spCircRot .6s infinite linear;
+        animation: spCircRot .6s infinite linear;
+    }
+
+    @-webkit-keyframes spCircRot {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(359deg);
+        }
+    }
+
+    @keyframes spCircRot {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(359deg);
+        }
+    }
+    #spinnerContainer{
+        display: none;
+    }
 </style>
 
 <body>
     <div id="meetupHeader" style="text-align: center;">
-        <div id="headerTitle">
-            <h1>Geneva Sports Club</h1>
-            <h2>Meetup Online Organizer</h2>
+        <div class="row">
+            <div class="col-lg-5 offset-lg-2 col-md-6 offset-md-3 col-sm-12">
+
+
+                <div id="headerTitle">
+                    <h1><span class="titleBig">G</span>eneva <br><span class="titleBig">S</span>ports<br> <span
+                            class="titleBig">C</span>lub</h1>
+                    <h2>Meetup Online Organizer</h2>
+                </div>
+            </div>
         </div>
     </div>
     <!-- <div id="temp" style="height:300px;">
         <img class="thumbnail" src="https://s3-eu-west-2.amazonaws.com/prod-everyoneactive-wp/wp-content/uploads/2018/07/09102653/Badminton.jpg" alt="image">
     </div> -->
     <div class="row justify-content-center">
-        <div id="div2" class="col-md-8 col-sm-12">
+        <div id="div2" class="col-md-12 col-sm-12 col-lg-8">
             <!-- <div id="formContainer">
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
@@ -301,26 +388,28 @@
                     <div id="paymentCounter">
                         <div>
                             <div class="pc_cell_header">
-                                <span style="color:darkviolet"><i style="font-size: 24px;" class="fas fa-dollar-sign"></i></span>
+                                <span style="color:darkviolet"><i style="font-size: 24px;"
+                                        class="fas fa-dollar-sign"></i></span>
                             </div>
-                            <div class="pc_cell">8</div>
+                            <div class="pc_cell cash_count">0</div>
                         </div>
                         <div>
                             <div class="pc_cell_header">
                                 <img style="width:24px"
                                     src="http://download.softwsp.com/sites/8/2018/05/icon-revolut.png">
                             </div>
-                            <div class="pc_cell">8</div>
+                            <div class="pc_cell revolut_count">0</div>
                         </div>
                         <div>
                             <div class="pc_cell_header">
                                 <img style="width:21px" src="./twint-logo.png">
                             </div>
-                            <div class="pc_cell">8</div>
+                            <div class="pc_cell twint_count">0</div>
                         </div>
                     </div>
                     <h4 style="font-weight:700;">Liste of players</h4>
                 </div>
+                <div id="spinnerContainer"><div class="sp sp-circle"></div></div>
                 <table id="example" class="table table-striped table-bordered" width="100%"></table>
             </div>
         </div>
@@ -377,18 +466,23 @@
                 }
                 result.push(obj);
             }
-            return JSON.stringify(result); //JSON
-            // return result; //JSON
+            // return JSON.stringify(result); //JSON
+            return result; //JSON
         }
 
         readFile = function () {
+            $("#spinnerContainer").show();
             var reader = new FileReader();
             reader.onload = function () {
 
                 var test2 = csvJSON(reader.result);
                 var test = csvJSON(reader.result.trim());
-                console.log("test2", test2);
-                console.log("test", test);
+                // console.log("test2", test2);
+                // console.log("test", test);
+                // console.log("test", test[0]);
+                // if ( ! $.fn.DataTable.fnIsDataTable( ex ) ) {
+                //     $(ex).dataTable();
+                // }
                 createTable(test);
             };
             // start reading the file. When it is done, calls the onload event defined above.
@@ -398,20 +492,43 @@
         fileInput.addEventListener('change', readFile);
 
         // });
-
+        function count_payment_method() {
+            var counter = {
+                "cash": 0,
+                "revolut": 0,
+                "twint": 0
+            }
+            $(".paymentMethod").each(function (index, item) {
+                // console.log("log of data order : ",$(item).data());
+                // console.log("log of data order : ",$(item).attr("data-order"));
+                // counter[$(item).data("order")] +=1;
+                counter[$(item).attr("data-order")] += 1;
+            })
+            $(".cash_count").text(counter["cash"]);
+            $(".revolut_count").text(counter["revolut"]);
+            $(".twint_count").text(counter["twint"]);
+            // console.log("counter",counter)
+        }
         function createTable(data) {
+            if ($.fn.DataTable.isDataTable('#example')) {
+                console.log("datatable exist already!!!!");
+                $('#example').DataTable().clear().destroy();
+            }
+            // console.log("csv data",data[0]);
             $(document).ready(function () {
                 var table = $('#example').DataTable({
+                    destroy: true,
                     dom: '<"top"Bi>rt<"bottom"><"clear">',
                     // buttons: [
                     //     'pdf','print'
                     // ],
                     buttons: [
+                        // {
+                        //     extend: 'print',
+                        //     exportOptions: { orthogonal: 'export' }
+                        // },
                         {
-                            extend: 'print',
-                            exportOptions: { orthogonal: 'export' }
-                        },
-                        {
+                            text:"GET PDF",
                             extend: 'pdfHtml5',
                             exportOptions: { orthogonal: 'export' }
                         }
@@ -462,8 +579,6 @@
                                 return data;
                             },
                             createdCell: function (td, cellData, rowData, row, col) {
-                                var name = rowData["Nom"][0] === "M" ? 2 : 4;
-                                var name = 4;
                                 $(td).attr('data-order', "unknown");
                             }
                         },
@@ -489,19 +604,23 @@
                     "twint": 3,
                     "unknown": 4
                 }
+
                 $(".btn-group-toggle input:radio").on('change', function () {
                     let val = $(this).val();
                     console.log("val", val);
                     var parent = this.parentNode.parentNode.parentNode;
                     $(parent).attr("data-order", val);
+                    // $(parent).data("order", val);
 
                     table.row(parent.parentNode).invalidate('dom');
+                    count_payment_method();
                 })
+                $("#spinnerContainer").hide();
             });
         }
-        var tt = "11 décembre 2019 19:00"
-        console.log(tt);
-        console.log(dataRaw[0]);
+        // var tt = "11 décembre 2019 19:00"
+        // console.log(tt);
+        // console.log(dataRaw[0]);
         createTable(dataRaw);
 
     </script>

@@ -298,6 +298,32 @@
         flex-direction: column;
         align-items:center;
     }
+
+    td i{
+        font-size:24px;
+    }
+    td .revolut_button{
+        width:24px;
+    }
+    td .twint_button{
+        width:22px;
+    }
+    @media only screen and (max-width: 992px) {
+        tr td:not(:last-child){
+            padding:30px 12px;
+            font-size:30px;
+        }
+        td i{
+            font-size:30px;
+        }
+        td .revolut_button{
+            width:30px;
+        }
+        td .twint_button{
+            width:28px;
+        }
+    }
+
 </style>
 
 <body>
@@ -541,7 +567,7 @@
                             data: "Date",
                             render: function(data,type,row){
                                 if ( type === 'display' || type === 'filter' ) {
-                                    return moment.unix(data).format('DD/MM/YY HH:MM')
+                                    return moment.unix(data).format('DD/MM HH:MM')
                                 }
                                 return data;
                             }
@@ -551,17 +577,17 @@
                             title: "Payment method",
                             className: "paymentMethod",
                             defaultContent: '<div class="btn-group btn-group-toggle special" data-toggle="buttons">' +
-                                '<label class="btn btn-light unknown active"><input type="radio" name="options" id="option1" autocomplete="off" value="unknown" checked><span><i style="font-size: 24px;" class="far fa-question-circle"></i></span></label>' +
-                                '<label class="btn btn-light cash"><input type="radio" name="options" id="option2" autocomplete="off" value="cash"><span><i style="font-size: 24px;" class="fas fa-dollar-sign"></i></span></label>' +
-                                '<label class="btn btn-light revolut"><input type="radio" name="options" id="option3" autocomplete="off" value="revolut"><img style="width:24px" src="./icon-revolut.png"></label>' +
-                                '<label class="btn btn-light twint"><input type="radio" name="options" id="option4" autocomplete="off" value="twint"><img style="width:22px" src="./twint-logo.png"></label>' +
+                                '<label class="btn btn-light unknown active"><input type="radio" name="options" id="option1" autocomplete="off" value="unknown" checked><span><i class="far fa-question-circle"></i></span></label>' +
+                                '<label class="btn btn-light cash"><input type="radio" name="options" id="option2" autocomplete="off" value="cash"><span><i class="fas fa-dollar-sign"></i></span></label>' +
+                                '<label class="btn btn-light revolut"><input type="radio" name="options" id="option3" autocomplete="off" value="revolut"><img class="revolut_button" src="./icon-revolut.png"></label>' +
+                                '<label class="btn btn-light twint"><input type="radio" name="options" id="option4" autocomplete="off" value="twint"><img class="twint_button" src="./twint-logo.png"></label>' +
                                 '</div>',
                             data: {
                                 _: "2.display",
                                 sort: "2.@data-order",
                                 type: "2.@data-order"
                             },
-                            width: "50%",
+                            width: "40%",
                             render: function (data, type, row, meta) {
                                 if (type == "export") {
                                     return row["2"]["@data-order"];

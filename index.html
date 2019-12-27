@@ -3,17 +3,9 @@
 <head>
     <title>Meetup Organizer</title>
     <meta charset="UTF-8">
-    <!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"> -->
-    <!-- <link rel="stylesheet" type="text/css" href="../css/style.css"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="index.css"> -->
 
     <script src="jquery.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" />
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script> -->
-
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-print-1.6.1/datatables.min.css"/>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-print-1.6.1/datatables.min.js"></script> -->
     <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.css" />
 
@@ -24,8 +16,8 @@
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/8f99321293.js" crossorigin="anonymous"></script>
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
-    <script src="https://cdn.jsdelivr.net/npm/simple-parallax-js@5.2.0/dist/simpleParallax.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src="./momentjs.fr.js"></script>
 </head>
 <style>
     .dataTables_info {
@@ -70,8 +62,13 @@
     .btn-light:not(:disabled):not(.disabled),
     .show>.btn-light.dropdown-toggle {
         color: #999;
-        background-color: #eee;
-        border-color: #eee;
+        background-color: #ddd;
+        border-color: #ddd;
+    }
+    .btn-group .btn-light:hover {
+        color: #aaa;
+        background-color: #e6e6e6;
+        border-color: #e6e6e6;
     }
 
     .btn-light:not(:disabled):not(.disabled) img {
@@ -99,38 +96,6 @@
         border-color: white;
         box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
     }
-
-    /* .unknown:not(:disabled):not(.disabled).active,
-    .unknown:not(:disabled):not(.disabled):active,
-    .show>.revolut.dropdown-toggle {
-        color: #fff;
-        background-color: #545b62;
-        border-color: #545b62;
-    }
-
-    .revolut:not(:disabled):not(.disabled).active,
-    .revolut:not(:disabled):not(.disabled):active,
-    .show>.revolut.dropdown-toggle {
-        color: #fff;
-        background-color: #bd2130;
-        border-color: #b21f2d;
-    }
-
-    .cash:not(:disabled):not(.disabled).active,
-    .cash:not(:disabled):not(.disabled):active,
-    .show>.cash.dropdown-toggle {
-        color: #fff;
-        background-color: #0062cc;
-        border-color: #005cbf;
-    }
-
-    .twint:not(:disabled):not(.disabled).active,
-    .twint:not(:disabled):not(.disabled):active,
-    .show>.twint.dropdown-toggle {
-        color: #fff;
-        background-color: #1e7e34;
-        border-color: #1c7430;
-    } */
 
     body {
         /* width:100%; */
@@ -196,6 +161,9 @@
     #meetupHeader>div,
     body>div.row {
         margin: 0px;
+    }
+    #div2{
+        padding:0px;
     }
 
 
@@ -342,30 +310,8 @@
             </div>
         </div>
     </div>
-    <!-- <div id="temp" style="height:300px;">
-        <img class="thumbnail" src="https://s3-eu-west-2.amazonaws.com/prod-everyoneactive-wp/wp-content/uploads/2018/07/09102653/Badminton.jpg" alt="image">
-    </div> -->
     <div class="row justify-content-center">
         <div id="div2" class="col-md-12 col-sm-12 col-lg-8">
-            <!-- <div id="formContainer">
-                <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                        <h5 style="margin-bottom:20px">Import the csv file from Meetup :</h5>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Upload</span>
-                            </div>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="filename">
-                                <label class="custom-file-label" for="filename">Choose file</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <div id="formContainer" class="card mb-12">
                 <div class="row no-gutters">
                     <div class="col-md-2 col-sm-12">
@@ -374,19 +320,17 @@
                             <span style="padding:15px;"><i style="font-size: 72px;"
                                     class="fas fa-file-import"></i></span>
                         </div>
-                        <!-- <img src="..." class="card-img" alt="..."> -->
                     </div>
                     <div class="col-md-10 col-sm-12">
                         <div class="card-body">
                             <h5 class="card-title" style="font-weight:700;">Import CSV from Meetup</h5>
                             <p class="card-text">If you are an administrator, you have access to the list of participants
                                 in the meetup event.
-                                To get the csv containing the list of players, sign in on the Meetup website, go to the url of the
+                                To get the csv containing the list of players, sign in on the Meetup website, makes sure the language is set to "English", go to the url of the
                                 event, and add "csv" to the url. </p>
                             <p><strong>Example : </strong> <a
-                                    href="https://www.meetup.com/fr-FR/Geneva-Badminton-Club/events/267107077/csv">https://www.meetup.com/fr-FR/Geneva-Badminton-Club/events/267107077/csv</a>.
+                                    href="https://www.meetup.com/Geneva-Badminton-Club/events/267107077/csv">https://www.meetup.com/Geneva-Badminton-Club/events/267107077/csv</a>
                             </p>
-                            <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                             <div>
                                 <div class="col-md-8 col-sm-12">
                                     <div class="input-group mb-3">
@@ -438,10 +382,6 @@
     </div>
 
     <script>
-        var image = document.getElementsByClassName('thumbnail');
-        new simpleParallax(image, {
-            scale: 1.5
-        });
         var dataRaw = [
             { "Nom": "Ajay SH", "ID utilisateur": "user 221075738", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "01 décembre 2019 19:00", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/221075738/" },
             { "Nom": "Alexis Thibaut", "ID utilisateur": "user 214102016", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 18:52", "Rejoindre le groupe le": "29 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/214102016/" },
@@ -458,23 +398,27 @@
             { "Nom": "Matthieu Bernard", "ID utilisateur": "user 187133994", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "13 décembre 2019 15:25", "Rejoindre le groupe le": "16 novembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/187133994/" },
             { "Nom": "Sandrine", "ID utilisateur": "user 252368549", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "12 décembre 2019 08:52", "Rejoindre le groupe le": "10 septembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/252368549/" }
         ]
-        // $("#filename").change(function (e) {
-        // var ext = $("input#filename").val().split(".").pop().toLowerCase();
-        // if ($.inArray(ext, ["csv"]) == -1) {
-        //     alert('Upload CSV');
-        //     return false;
-        // }
-        // if (e.target.files != undefined) {
-        //     var reader = new FileReader();
-        //     reader.onload = function (e) {
-        //         var lines = e.target.result.split('\r\n');
-        //         for (i = 0; i < lines.length; ++i) {
-        //             $('div').append('<br>' + lines[i]);
-        //         }
-        //     };
-        //     reader.readAsText(e.target.files.item(0));
-        // }
-        // return false;
+        var dataRaw2 = [
+            {"Name":"Alex Monich","User ID":"user 90833142","Title":"","Event Host":"","RSVP":"Yes","Guests":"","RSVPed on":"December 12, 2019 9:39 AM","Joined Group on":"January 5, 2019","URL of Member Profile":"https://www.meetup.com/GenevaSportsClub/members/90833142/"},
+            {"Name":"Arek","User ID":"user 248732555","Title":"","Event Host":"","RSVP":"Yes","Guests":"","RSVPed on":"December 17, 2019 4:38 PM","Joined Group on":"September 3, 2019","URL of Member Profile":"https://www.meetup.com/GenevaSportsClub/members/248732555/"},
+            {"Name":"aris","User ID":"user 294119790","Title":"","Event Host":"","RSVP":"Yes","Guests":"","RSVPed on":"December 12, 2019 6:30 PM","Joined Group on":"October 12, 2019","URL of Member Profile":"https://www.meetup.com/GenevaSportsClub/members/294119790/"},
+            {"Name":"Chris","User ID":"user 291568325","Title":"","Event Host":"","RSVP":"Yes","Guests":"","RSVPed on":"December 12, 2019 10:38 PM","Joined Group on":"September 19, 2019","URL of Member Profile":"https://www.meetup.com/GenevaSportsClub/members/291568325/"},
+            {"Name":"David","User ID":"user 200886558","Title":"Organizer","Event Host":"Yes","RSVP":"Yes","Guests":"","RSVPed on":"December 12, 2019 9:38 AM","Joined Group on":"March 14, 2016","URL of Member Profile":"https://www.meetup.com/GenevaSportsClub/members/200886558/"},
+            {"Name":"Florian","User ID":"user 242792750","Title":"","Event Host":"","RSVP":"Yes","Guests":"","RSVPed on":"December 12, 2019 3:34 PM","Joined Group on":"December 14, 2017","URL of Member Profile":"https://www.meetup.com/GenevaSportsClub/members/242792750/"},
+            {"Name":"Jesús Vicente","User ID":"user 294226648","Title":"","Event Host":"","RSVP":"Yes","Guests":"","RSVPed on":"December 17, 2019 3:07 PM","Joined Group on":"December 17, 2019","URL of Member Profile":"https://www.meetup.com/GenevaSportsClub/members/294226648/"},
+            {"Name":"Li","User ID":"user 298501770","Title":"","Event Host":"","RSVP":"Yes","Guests":"","RSVPed on":"December 14, 2019 11:36 AM","Joined Group on":"December 14, 2019","URL of Member Profile":"https://www.meetup.com/GenevaSportsClub/members/298501770/"}
+        ]
+        var dataRawFiltered = [
+            {"Name":"Alex Monich","Date":1547282340},
+            {"Name":"Arek","Date":1547739480},
+            {"Name":"aris","Date":1547314200},
+            {"Name":"Chris","Date":1547329080},
+            {"Name":"David","Date":1547282280},
+            {"Name":"Florian","Date":1547303640},
+            {"Name":"Jesús Vicente","Date":1547734020},
+            {"Name":"Li","Date":1547462160}
+        ]
+
         var fileInput = document.getElementById("filename");
         function csvJSON(csv) {
             var lines = csv.split("\n");
@@ -492,6 +436,15 @@
             return result; //JSON
         }
 
+        function filterData(data){
+            return data.map(function(d){
+                return {
+                    "Name":d["Name"],
+                    "Date": moment(d["RSVPed on"], "MMMM DD, YYYY HH:mm a").unix()
+                }
+            })
+        }
+
         readFile = function () {
             $("#spinnerContainer").show();
             var reader = new FileReader();
@@ -499,13 +452,15 @@
 
                 var test2 = csvJSON(reader.result);
                 var test = csvJSON(reader.result.trim());
+                var raw_data = csvJSON(reader.result.trim());
+                var filtered_data = filterData(raw_data);
                 // console.log("test2", test2);
-                // console.log("test", test);
+                console.log("filtered_data", JSON.stringify(filtered_data));
                 // console.log("test", test[0]);
                 // if ( ! $.fn.DataTable.fnIsDataTable( ex ) ) {
                 //     $(ex).dataTable();
                 // }
-                createTable(test);
+                // createTable(test);
             };
             // start reading the file. When it is done, calls the onload event defined above.
             reader.readAsText(fileInput.files[0]);
@@ -557,7 +512,7 @@
                     ],
                     data: data,
                     paging: false,
-                    order: [[1, "asc"], [2, "asc"]],
+                    order: [[1, "asc"]],
                     // columns: [
                     //     { title: "Name", data: "Nom" },
                     //     { title: "Registered on", data: "Répondu le" }
@@ -572,12 +527,20 @@
                         {
                             targets: 0,
                             title: "Name",
-                            data: "Nom"
+                            // data: "Nom"
+                            data: "Name"
                         },
                         {
                             targets: 1,
-                            title: "Registered on",
-                            data: "Répondu le"
+                            title: "Date",
+                            // data: "Répondu le",
+                            data: "Date",
+                            render: function(data,type,row){
+                                if ( type === 'display' || type === 'filter' ) {
+                                    return moment.unix(data).format('DD/MM/YY HH:MM')
+                                }
+                                return data;
+                            }
                         },
                         {
                             targets: 2,
@@ -594,6 +557,7 @@
                                 sort: "2.@data-order",
                                 type: "2.@data-order"
                             },
+                            width: "50%",
                             render: function (data, type, row, meta) {
                                 if (type == "export") {
                                     return row["2"]["@data-order"];
@@ -604,19 +568,6 @@
                                 $(td).attr('data-order', "unknown");
                             }
                         },
-                        // {
-                        //     targets: 3,
-                        //     data:
-                        //     title: "Image",
-                        //     render: function ( data, type, row, meta ) {
-                        //     //     console.log("lol",data,row,meta);
-                        //     //     if(type == 'sort'){
-                        //     //         return row["Nom"][0] === "M" ? 2 : 4;
-                        //     //     }
-                        //     //     return data;
-                        //     //     // return type == 'sort' ? "unknown" : data
-                        //     // }
-                        // },
                     ]
                 });
                 table.rows().invalidate('dom').draw();
@@ -643,7 +594,7 @@
         // var tt = "11 décembre 2019 19:00"
         // console.log(tt);
         // console.log(dataRaw[0]);
-        createTable(dataRaw);
+        createTable(dataRawFiltered);
 
     </script>
 

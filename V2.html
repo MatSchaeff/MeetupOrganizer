@@ -1,0 +1,811 @@
+<html>
+
+<head>
+    <title>Meetup Organizer</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <script src="jquery.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!-- <script src="https://kit.fontawesome.com/8f99321293.js" crossorigin="anonymous"></script> -->
+    <link href="./fontAwesome/css/fontawesome.min.css" rel="stylesheet">
+    <!-- <link href="./fontAwesome/css/brands.css" rel="stylesheet"> -->
+    <link href="./fontAwesome/css/solid.min.css" rel="stylesheet">
+    <link href="./fontAwesome/css/regular.min.css" rel="stylesheet">
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src="./momentjs.fr.js"></script>
+</head>
+<style>
+    .dataTables_info {
+        float: left;
+        padding-top: 10px !important;
+    }
+
+    #example_filter {
+        float: right;
+    }
+
+    .dt-buttons {
+        float: left;
+        margin-bottom: 5px;
+        margin-right: 5px;
+    }
+
+    tbody td.paymentMethod {
+        padding: 0px;
+        background-color: #eee;
+    }
+
+    td .btn-group {
+        width: 100%;
+    }
+
+    .btn-group.special {
+        display: flex;
+    }
+
+    .special .btn {
+        flex: 1
+    }
+
+    .btn-payment {
+        color: #fff;
+        background-color: #adb6bd;
+        border-color: #adb6bd;
+    }
+
+    .btn-light:not(:disabled):not(.disabled),
+    .btn-light:not(:disabled):not(.disabled),
+    .show>.btn-light.dropdown-toggle {
+        color: #999;
+        background-color: #ddd;
+        border-color: #ddd;
+    }
+
+    .btn-group .btn-light:hover {
+        color: #aaa;
+        background-color: #e6e6e6;
+        border-color: #e6e6e6;
+    }
+
+    .btn-light:not(:disabled):not(.disabled) img {
+        filter: grayscale(100%);
+    }
+
+    .btn-light:not(:disabled):not(.disabled).active img {
+        filter: grayscale(0%);
+    }
+
+    .btn-light:not(:disabled):not(.disabled).active,
+    .btn-light:not(:disabled):not(.disabled):active,
+    .show>.btn-light.dropdown-toggle {
+        color: black;
+        background-color: white;
+        border-color: white;
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .cash:not(:disabled):not(.disabled).active,
+    .cash:not(:disabled):not(.disabled):active,
+    .show>.cash.dropdown-toggle {
+        color: darkviolet;
+        background-color: white;
+        border-color: white;
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+        background-color: #f3f3f3;
+        font-family: "Helvetica";
+    }
+
+
+    #tableContainer,
+    #formContainer {
+        background-color: white;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        margin: 20px 0px;
+        border-radius: 2px;
+    }
+
+    #tableContainer {
+        padding: 30px;
+    }
+
+    #formContainer {
+        border: 0px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    #meetupHeader {
+        background-image: url("./Badminton.jpg");
+        height: 350px;
+        background-position-y: -200px;
+        background-position-x: 60%;
+
+
+        /* Create the parallax scrolling effect */
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1)
+    }
+
+    #meetupHeader>div,
+    body>div.row {
+        margin: 0px;
+    }
+
+    #div2 {
+        padding: 0px;
+    }
+
+
+    h1 {
+        font-size: 42px;
+        text-align: left;
+        border-bottom: 1px solid black;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    h2 {
+        font-size: 26px;
+        text-align: left;
+    }
+
+    #headerTitle {
+        display: inline-block;
+    }
+
+    .titleBig {
+        font-size: 68px;
+    }
+
+    .pc_cell,
+    .pc_cell_header {
+        padding: 6px;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .pc_cell_header {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .pc_cell {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .pc_cell.cash_count {
+        background-color: darkviolet;
+        color: white;
+    }
+
+    .pc_cell.revolut_count {
+        background-color: #01cef2;
+        color: white;
+    }
+
+    .pc_cell.twint_count {
+        background-color: #01d76f;
+        color: white;
+    }
+
+    #paymentCounter {
+        width: 200px;
+        float: right;
+        text-align: center;
+        display: flex;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+
+    #paymentCounter>div {
+        flex: 1
+    }
+
+    .sp {
+        width: 32px;
+        height: 32px;
+        clear: both;
+        margin: 20px auto;
+    }
+
+    /* Spinner Circle Rotation */
+    .sp-circle {
+        border: 4px rgba(0, 0, 0, 0.25) solid;
+        border-top: 4px black solid;
+        border-radius: 50%;
+        -webkit-animation: spCircRot .6s infinite linear;
+        animation: spCircRot .6s infinite linear;
+    }
+
+    @-webkit-keyframes spCircRot {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(359deg);
+        }
+    }
+
+    @keyframes spCircRot {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(359deg);
+        }
+    }
+
+    #spinnerContainer {
+        display: none;
+    }
+
+    #example {
+        font-size: 20px;
+        height: 100%;
+    }
+
+    #example td {
+        /* font-size:20px; */
+        height: 100%;
+    }
+
+    #example .btn-group {
+        /* font-size:20px; */
+        height: 100%;
+    }
+
+    #example label.btn {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    td i {
+        font-size: 42px;
+    }
+
+    td .revolut_button {
+        width: 42px;
+    }
+
+    td .twint_button {
+        width: 38px;
+    }
+
+    @media only screen and (max-width: 992px) {
+        tr td:not(:last-child) {
+            padding: 30px 12px;
+            font-size: 30px;
+        }
+
+        td i {
+            font-size: 42px;
+        }
+
+        td .revolut_button {
+            width: 42px;
+        }
+
+        td .twint_button {
+            width: 38px;
+        }
+    }
+
+    .circular {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .circular img {
+        min-width: 100%;
+        min-height: 100%;
+        max-width: 120%;
+        width: auto;
+        height: auto;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+<body>
+    <div id="meetupHeader" style="text-align: center;">
+        <div class="row">
+            <div class="col-lg-5 offset-lg-2 col-md-6 offset-md-3 col-sm-12">
+
+
+                <div id="headerTitle">
+                    <h1><span class="titleBig">G</span>eneva <br><span class="titleBig">S</span>ports<br> <span
+                            class="titleBig">C</span>lub</h1>
+                    <h2>Meetup Online Organizer</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div id="div2" class="col-md-12 col-sm-12 col-lg-8">
+            <div id="formContainer" class="card mb-12">
+                <div class="row no-gutters">
+                    <div class="col-md-2 col-sm-12">
+                        <div
+                            style="display: flex;justify-content: center;align-items: center; height:100%;background-color: #8bcea9;">
+                            <span style="padding:15px;"><i style="font-size: 72px;"
+                                    class="fas fa-file-import"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-10 col-sm-12">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-weight:700;">Import CSV from Meetup</h5>
+                            <!-- <p class="card-text">If you are an administrator, you have access to the list of
+                                participants
+                                in the meetup event.
+                                To get the csv containing the list of players, sign in on the Meetup website, make sure
+                                the language is set to "English", go to the url of the
+                                event, and add "csv" to the url. </p> -->
+                            <p class="card-text">As a meetup member,
+                                you have access to the list of participants of every events of your group.
+                                To get the file containing the list of players, go to the url of the
+                                event, and select the event ID in the url of the page. Then enter it in the first form
+                                below.
+                                Click the button to create the file, and save it. <i>( File > Save Page As )</i></p>
+                            <p><strong>Example : </strong> <a target="_blank"
+                                    href="https://www.meetup.com/Geneva-Badminton-Club/events/267107077">https://www.meetup.com/Geneva-Badminton-Club/events/267107077</a>
+                            </p>
+                            <div class="col-md-10 col-sm-12">
+                                <div class="input-group mb-3">
+                                    <input id="groupName" type="text" class="form-control"
+                                        placeholder="Geneva-Badminton-Club" value="Geneva-Badminton-Club">
+                                    <input id="eventId" type="text" class="form-control" placeholder="267107077"
+                                        value="267107077">
+                                    <div class="input-group-append">
+                                        <!-- <button class="btn btn-outline-secondary" type="button">Create file</button> -->
+                                        <button id="eventIdButton" class="btn btn-success" type="button">Create
+                                            file</button>
+                                    </div>
+                                </div>
+                                <div id="newJSONlink" style="padding:10px 0px"></div>
+                            </div>
+                            <p class="card-text">Once you have downloaded the file, import it here :</p>
+                            <div>
+                                <div class="col-md-8 col-sm-12">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Upload</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="filename">
+                                            <label class="custom-file-label" for="filename">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tableContainer">
+                <div style="margin-bottom:20px;height:40px;">
+                    <div id="paymentCounter">
+                        <div>
+                            <div class="pc_cell_header">
+                                <span style="color:darkviolet"><i style="font-size: 24px;"
+                                        class="fas fa-dollar-sign"></i></span>
+                            </div>
+                            <div class="pc_cell cash_count">0</div>
+                        </div>
+                        <div>
+                            <div class="pc_cell_header">
+                                <img style="width:24px" src="./icon-revolut.png">
+                            </div>
+                            <div class="pc_cell revolut_count">0</div>
+                        </div>
+                        <div>
+                            <div class="pc_cell_header">
+                                <img style="width:21px" src="./twint-logo.png">
+                            </div>
+                            <div class="pc_cell twint_count">0</div>
+                        </div>
+                    </div>
+                    <h4 style="font-weight:700;">List of players</h4>
+                </div>
+                <div id="spinnerContainer">
+                    <div class="sp sp-circle"></div>
+                </div>
+                <table id="example" class="table table-striped table-bordered" width="100%"></table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        test = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees?queries=(endpoint:Geneva-Badminton-Club/events/267809487/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers,pay_status,self,web_actions,attendance_status%27,only:%27answers,response,attendance_status,guests,member,pay_status,updated%27,order:time),ref:eventAttendees_Geneva-Badminton-Club_267809487,type:attendees)";
+        test = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees.json?queries=(endpoint:Geneva-Badminton-Club/events/267729284/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers%27,only:%27answers,response,guests,member,updated%27,order:time),ref:eventAttendees_Geneva-Badminton-Club_267729284,type:attendees)"
+        test = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees.json?queries=(endpoint:Geneva-Badminton-Club/events/267107077/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers%27,only:%27answers,response,guests,member,updated%27,order:time),ref:eventAttendees_Geneva-Badminton-Club_267107077,type:attendees)"
+        // $.getJSON(test, function (data) {
+        //     console.log("data", data);
+        // });
+        $("#eventIdButton").click(function () {
+            var groupName = $('#groupName').val();
+            var eventId = $('#eventId').val();
+            var eventLink = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees.json?queries=(endpoint:" +
+                groupName + "/events/" + eventId + "/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers%27," +
+                "only:%27answers,response,guests,member,updated%27,order:time),ref:eventAttendees_" +
+                groupName + "_" + eventId + ",type:attendees)";
+            console.log("eventLink", eventLink);
+
+            $("#newJSONlink").html("<button type='button' class='btn btn-primary btn-sm'><a target='_blank' style='color:white' href=" + eventLink + ">New File link</a></button>");
+        });
+
+        var dataRaw = [
+            { "Nom": "Ajay SH", "ID utilisateur": "user 221075738", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "01 décembre 2019 19:00", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/221075738/" },
+            { "Nom": "Alexis Thibaut", "ID utilisateur": "user 214102016", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 18:52", "Rejoindre le groupe le": "29 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/214102016/" },
+            { "Nom": "benoit bureau", "ID utilisateur": "user 297068134", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "+1", "Répondu le": "11 décembre 2019 11:49", "Rejoindre le groupe le": "19 novembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/297068134/" },
+            { "Nom": "David", "ID utilisateur": "user 200886558", "Titre": "Organisateur", "Animateur ponctuel": "Oui", "S'inscrire": "Oui", "Invité(e)s": "+1", "Répondu le": "17 décembre 2019 17:31", "Rejoindre le groupe le": "26 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/200886558/" },
+            { "Nom": "David Nielsen", "ID utilisateur": "user 297472185", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 13:41", "Rejoindre le groupe le": "26 novembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/297472185/" },
+            { "Nom": "Haide", "ID utilisateur": "user 245676710", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 13:10", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/245676710/" },
+            { "Nom": "Houcem ben mahfoudh", "ID utilisateur": "user 210788793", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "17 décembre 2019 17:41", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/210788793/" },
+            { "Nom": "Irina", "ID utilisateur": "user 101590292", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 11:09", "Rejoindre le groupe le": "15 octobre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/101590292/" },
+            { "Nom": "Javier Calderon", "ID utilisateur": "user 255436533", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 10:36", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/255436533/" },
+            { "Nom": "JM", "ID utilisateur": "user 280105035", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 18:13", "Rejoindre le groupe le": "30 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/280105035/" },
+            { "Nom": "Laurent", "ID utilisateur": "user 275222840", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 10:40", "Rejoindre le groupe le": "27 août 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/275222840/" },
+            { "Nom": "Matt Schaeff'", "ID utilisateur": "user 292454041", "Titre": "", "Animateur ponctuel": "Oui", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "11 décembre 2019 12:17", "Rejoindre le groupe le": "29 septembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/292454041/" },
+            { "Nom": "Matthieu Bernard", "ID utilisateur": "user 187133994", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "13 décembre 2019 15:25", "Rejoindre le groupe le": "16 novembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/187133994/" },
+            { "Nom": "Sandrine", "ID utilisateur": "user 252368549", "Titre": "", "Animateur ponctuel": "", "S'inscrire": "Oui", "Invité(e)s": "", "Répondu le": "12 décembre 2019 08:52", "Rejoindre le groupe le": "10 septembre 2019", "URL du profil de membre": "https://www.meetup.com/fr-FR/Geneva-Badminton-Club/members/252368549/" }
+        ]
+        var dataRaw2 = [
+            { "Name": "Alex Monich", "User ID": "user 90833142", "Title": "", "Event Host": "", "RSVP": "Yes", "Guests": "", "RSVPed on": "December 12, 2019 9:39 AM", "Joined Group on": "January 5, 2019", "URL of Member Profile": "https://www.meetup.com/GenevaSportsClub/members/90833142/" },
+            { "Name": "Arek", "User ID": "user 248732555", "Title": "", "Event Host": "", "RSVP": "Yes", "Guests": "", "RSVPed on": "December 17, 2019 4:38 PM", "Joined Group on": "September 3, 2019", "URL of Member Profile": "https://www.meetup.com/GenevaSportsClub/members/248732555/" },
+            { "Name": "aris", "User ID": "user 294119790", "Title": "", "Event Host": "", "RSVP": "Yes", "Guests": "", "RSVPed on": "December 12, 2019 6:30 PM", "Joined Group on": "October 12, 2019", "URL of Member Profile": "https://www.meetup.com/GenevaSportsClub/members/294119790/" },
+            { "Name": "Chris", "User ID": "user 291568325", "Title": "", "Event Host": "", "RSVP": "Yes", "Guests": "", "RSVPed on": "December 12, 2019 10:38 PM", "Joined Group on": "September 19, 2019", "URL of Member Profile": "https://www.meetup.com/GenevaSportsClub/members/291568325/" },
+            { "Name": "David", "User ID": "user 200886558", "Title": "Organizer", "Event Host": "Yes", "RSVP": "Yes", "Guests": "", "RSVPed on": "December 12, 2019 9:38 AM", "Joined Group on": "March 14, 2016", "URL of Member Profile": "https://www.meetup.com/GenevaSportsClub/members/200886558/" },
+            { "Name": "Florian", "User ID": "user 242792750", "Title": "", "Event Host": "", "RSVP": "Yes", "Guests": "", "RSVPed on": "December 12, 2019 3:34 PM", "Joined Group on": "December 14, 2017", "URL of Member Profile": "https://www.meetup.com/GenevaSportsClub/members/242792750/" },
+            { "Name": "Jesús Vicente", "User ID": "user 294226648", "Title": "", "Event Host": "", "RSVP": "Yes", "Guests": "", "RSVPed on": "December 17, 2019 3:07 PM", "Joined Group on": "December 17, 2019", "URL of Member Profile": "https://www.meetup.com/GenevaSportsClub/members/294226648/" },
+            { "Name": "Li", "User ID": "user 298501770", "Title": "", "Event Host": "", "RSVP": "Yes", "Guests": "", "RSVPed on": "December 14, 2019 11:36 AM", "Joined Group on": "December 14, 2019", "URL of Member Profile": "https://www.meetup.com/GenevaSportsClub/members/298501770/" }
+        ]
+        var dataRawFiltered = [
+            { "Name": "Alex Monich", "Date": 1547282340 },
+            { "Name": "Arek", "Date": 1547739480 },
+            { "Name": "aris", "Date": 1547314200 },
+            { "Name": "Chris", "Date": 1547329080 },
+            { "Name": "David", "Date": 1547282280 },
+            { "Name": "Florian", "Date": 1547303640 },
+            { "Name": "Jesús Vicente", "Date": 1547734020 },
+            { "Name": "Li", "Date": 1547462160 }
+        ]
+        var dataRawJSON = [{ "name": "Houcem ben mahfoudh", "guest": 0, "date": 1576600897000, "photo": "secure.meetupstatic.com/photos/member/6/9/2/c/member_282146924.jpeg" }, { "name": "David", "guest": 1, "date": 1576600284000, "photo": "secure.meetupstatic.com/photos/member/9/e/5/7/member_276160535.jpeg" }, { "name": "Matthieu Bernard", "guest": 0, "date": 1576247121000, "photo": "secure.meetupstatic.com/photos/member/7/b/e/c/member_246031724.jpeg" }, { "name": "Sandrine", "guest": 0, "date": 1576137136000, "photo": "secure.meetupstatic.com/photos/member/5/c/d/6/member_276383766.jpeg" }, { "name": "Ajay SH", "guest": 0, "date": 1576087250000, "photo": "secure.meetupstatic.com/photos/member/4/6/c/c/member_287958124.jpeg" }, { "name": "Alexis Thibaut", "guest": 0, "date": 1576086746000, "photo": "secure.meetupstatic.com/photos/member/2/c/5/member_277320709.jpeg" }, { "name": "JM", "guest": 0, "date": 1576084413000, "photo": "secure.meetupstatic.com/photos/member/c/c/2/7/member_288652263.jpeg" }, { "name": "David Nielsen", "guest": 0, "date": 1576068081000, "photo": "secure.meetupstatic.com/photos/member/e/2/2/member_295023618.jpeg" }, { "name": "𝙷𝚊𝚒𝚍𝚎", "guest": 0, "date": 1576066248000, "photo": "" }, { "name": "Matt Schaeff'", "guest": 0, "date": 1576063066000, "photo": "secure.meetupstatic.com/photos/member/b/6/a/1/member_293086753.jpeg" }, { "name": "benoit bureau", "guest": 1, "date": 1576061370000, "photo": "secure.meetupstatic.com/photos/member/7/7/5/9/member_294810553.jpeg" }, { "name": "Irina", "guest": 0, "date": 1576058966000, "photo": "secure.meetupstatic.com/photos/member/3/2/2/c/member_293712844.jpeg" }, { "name": "Laurent", "guest": 0, "date": 1576057225000, "photo": "secure.meetupstatic.com/photos/member/c/5/4/5/member_285470501.jpeg" }, { "name": "Javier Calderon", "guest": 0, "date": 1576057003000, "photo": "secure.meetupstatic.com/photos/member/1/1/4/4/member_277564420.jpeg" }];
+
+        var dataRawJSON2 = [{ "name": "Houcem ben mahfoudh", "guest": 0, "date": 1576600897, "photo": "secure.meetupstatic.com/photos/member/6/9/2/c/member_282146924.jpeg", "member": { "name": "Houcem ben mahfoudh", "photo": "secure.meetupstatic.com/photos/member/6/9/2/c/member_282146924.jpeg" } }, { "name": "David", "guest": 1, "date": 1576600284, "photo": "secure.meetupstatic.com/photos/member/9/e/5/7/member_276160535.jpeg", "member": { "name": "David", "photo": "secure.meetupstatic.com/photos/member/9/e/5/7/member_276160535.jpeg" } }, { "name": "Matthieu Bernard", "guest": 0, "date": 1576247121, "photo": "secure.meetupstatic.com/photos/member/7/b/e/c/member_246031724.jpeg", "member": { "name": "Matthieu Bernard", "photo": "secure.meetupstatic.com/photos/member/7/b/e/c/member_246031724.jpeg" } }, { "name": "Sandrine", "guest": 0, "date": 1576137136, "photo": "secure.meetupstatic.com/photos/member/5/c/d/6/member_276383766.jpeg", "member": { "name": "Sandrine", "photo": "secure.meetupstatic.com/photos/member/5/c/d/6/member_276383766.jpeg" } }, { "name": "Ajay SH", "guest": 0, "date": 1576087250, "photo": "secure.meetupstatic.com/photos/member/4/6/c/c/member_287958124.jpeg", "member": { "name": "Ajay SH", "photo": "secure.meetupstatic.com/photos/member/4/6/c/c/member_287958124.jpeg" } }, { "name": "Alexis Thibaut", "guest": 0, "date": 1576086746, "photo": "secure.meetupstatic.com/photos/member/2/c/5/member_277320709.jpeg", "member": { "name": "Alexis Thibaut", "photo": "secure.meetupstatic.com/photos/member/2/c/5/member_277320709.jpeg" } }, { "name": "JM", "guest": 0, "date": 1576084413, "photo": "secure.meetupstatic.com/photos/member/c/c/2/7/member_288652263.jpeg", "member": { "name": "JM", "photo": "secure.meetupstatic.com/photos/member/c/c/2/7/member_288652263.jpeg" } }, { "name": "David Nielsen", "guest": 0, "date": 1576068081, "photo": "secure.meetupstatic.com/photos/member/e/2/2/member_295023618.jpeg", "member": { "name": "David Nielsen", "photo": "secure.meetupstatic.com/photos/member/e/2/2/member_295023618.jpeg" } }, { "name": "𝙷𝚊𝚒𝚍𝚎", "guest": 0, "date": 1576066248, "photo": "", "member": { "name": "𝙷𝚊𝚒𝚍𝚎", "photo": "" } }, { "name": "Matt Schaeff'", "guest": 0, "date": 1576063066, "photo": "secure.meetupstatic.com/photos/member/b/6/a/1/member_293086753.jpeg", "member": { "name": "Matt Schaeff'", "photo": "secure.meetupstatic.com/photos/member/b/6/a/1/member_293086753.jpeg" } }, { "name": "benoit bureau", "guest": 1, "date": 1576061370, "photo": "secure.meetupstatic.com/photos/member/7/7/5/9/member_294810553.jpeg", "member": { "name": "benoit bureau", "photo": "secure.meetupstatic.com/photos/member/7/7/5/9/member_294810553.jpeg" } }, { "name": "Irina", "guest": 0, "date": 1576058966, "photo": "secure.meetupstatic.com/photos/member/3/2/2/c/member_293712844.jpeg", "member": { "name": "Irina", "photo": "secure.meetupstatic.com/photos/member/3/2/2/c/member_293712844.jpeg" } }, { "name": "Laurent", "guest": 0, "date": 1576057225, "photo": "secure.meetupstatic.com/photos/member/c/5/4/5/member_285470501.jpeg", "member": { "name": "Laurent", "photo": "secure.meetupstatic.com/photos/member/c/5/4/5/member_285470501.jpeg" } }, { "name": "Javier Calderon", "guest": 0, "date": 1576057003, "photo": "secure.meetupstatic.com/photos/member/1/1/4/4/member_277564420.jpeg", "member": { "name": "Javier Calderon", "photo": "secure.meetupstatic.com/photos/member/1/1/4/4/member_277564420.jpeg" } }];
+        var dataRawJSON3 = [{"name":"Houcem ben mahfoudh","guest":0,"date":1576600897,"photo":"secure.meetupstatic.com/photos/member/6/9/2/c/member_282146924.jpeg","member":{"name":"Houcem ben mahfoudh","photo":"secure.meetupstatic.com/photos/member/6/9/2/c/member_282146924.jpeg"},"payment":"unknown"},{"name":"David","guest":1,"date":1576600284,"photo":"secure.meetupstatic.com/photos/member/9/e/5/7/member_276160535.jpeg","member":{"name":"David","photo":"secure.meetupstatic.com/photos/member/9/e/5/7/member_276160535.jpeg"},"payment":"unknown"},{"name":"Matthieu Bernard","guest":0,"date":1576247121,"photo":"secure.meetupstatic.com/photos/member/7/b/e/c/member_246031724.jpeg","member":{"name":"Matthieu Bernard","photo":"secure.meetupstatic.com/photos/member/7/b/e/c/member_246031724.jpeg"},"payment":"unknown"},{"name":"Sandrine","guest":0,"date":1576137136,"photo":"secure.meetupstatic.com/photos/member/5/c/d/6/member_276383766.jpeg","member":{"name":"Sandrine","photo":"secure.meetupstatic.com/photos/member/5/c/d/6/member_276383766.jpeg"},"payment":"unknown"},{"name":"Ajay SH","guest":0,"date":1576087250,"photo":"secure.meetupstatic.com/photos/member/4/6/c/c/member_287958124.jpeg","member":{"name":"Ajay SH","photo":"secure.meetupstatic.com/photos/member/4/6/c/c/member_287958124.jpeg"},"payment":"unknown"},{"name":"Alexis Thibaut","guest":0,"date":1576086746,"photo":"secure.meetupstatic.com/photos/member/2/c/5/member_277320709.jpeg","member":{"name":"Alexis Thibaut","photo":"secure.meetupstatic.com/photos/member/2/c/5/member_277320709.jpeg"},"payment":"unknown"},{"name":"JM","guest":0,"date":1576084413,"photo":"secure.meetupstatic.com/photos/member/c/c/2/7/member_288652263.jpeg","member":{"name":"JM","photo":"secure.meetupstatic.com/photos/member/c/c/2/7/member_288652263.jpeg"},"payment":"unknown"},{"name":"David Nielsen","guest":0,"date":1576068081,"photo":"secure.meetupstatic.com/photos/member/e/2/2/member_295023618.jpeg","member":{"name":"David Nielsen","photo":"secure.meetupstatic.com/photos/member/e/2/2/member_295023618.jpeg"},"payment":"unknown"},{"name":"𝙷𝚊𝚒𝚍𝚎","guest":0,"date":1576066248,"photo":"","member":{"name":"𝙷𝚊𝚒𝚍𝚎","photo":"lol"},"payment":"unknown"},{"name":"Matt Schaeff'","guest":0,"date":1576063066,"photo":"secure.meetupstatic.com/photos/member/b/6/a/1/member_293086753.jpeg","member":{"name":"Matt Schaeff'","photo":"secure.meetupstatic.com/photos/member/b/6/a/1/member_293086753.jpeg"},"payment":"unknown"},{"name":"benoit bureau","guest":1,"date":1576061370,"photo":"secure.meetupstatic.com/photos/member/7/7/5/9/member_294810553.jpeg","member":{"name":"benoit bureau","photo":"secure.meetupstatic.com/photos/member/7/7/5/9/member_294810553.jpeg"},"payment":"unknown"},{"name":"Irina","guest":0,"date":1576058966,"photo":"secure.meetupstatic.com/photos/member/3/2/2/c/member_293712844.jpeg","member":{"name":"Irina","photo":"secure.meetupstatic.com/photos/member/3/2/2/c/member_293712844.jpeg"},"payment":"unknown"},{"name":"Laurent","guest":0,"date":1576057225,"photo":"secure.meetupstatic.com/photos/member/c/5/4/5/member_285470501.jpeg","member":{"name":"Laurent","photo":"secure.meetupstatic.com/photos/member/c/5/4/5/member_285470501.jpeg"},"payment":"unknown"},{"name":"Javier Calderon","guest":0,"date":1576057003,"photo":"secure.meetupstatic.com/photos/member/1/1/4/4/member_277564420.jpeg","member":{"name":"Javier Calderon","photo":"secure.meetupstatic.com/photos/member/1/1/4/4/member_277564420.jpeg"},"payment":"unknown"}]
+
+        var fileInput = document.getElementById("filename");
+        function csvJSON(csv) {
+            var lines = csv.split("\n");
+            var result = [];
+            var headers = lines[0].split("\t");
+            for (var i = 1; i < lines.length; i++) {
+                var obj = {};
+                var currentline = lines[i].split("\t");
+                for (var j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = currentline[j];
+                }
+                result.push(obj);
+            }
+            // return JSON.stringify(result); //JSON
+            return result; //JSON
+        }
+
+        function filterData(data) {
+            return data.map(function (d) {
+                return {
+                    "Name": d["Name"],
+                    "Date": moment(d["RSVPed on"], "MMMM DD, YYYY HH:mm a").unix()
+                }
+            })
+        }
+        function filterData2(data) {
+            return data
+                .filter(function (d) {
+                    return d.response === "yes"
+                })
+                .map(function (d) {
+                    return {
+                        "name": d.member.name,
+                        "guest": d.guests,
+                        "date": d.updated / 1000,
+                        "photo": d.member.photo ? d.member.photo.photo_link.substring(8, d.member.photo.photo_link.length) : "",
+                        "member": {
+                            "name": d.member.name,
+                            "photo": d.member.photo ? d.member.photo.photo_link.substring(8, d.member.photo.photo_link.length) : "lol",
+                        },
+                        "payment": "unknown"
+                    }
+                })
+        }
+
+        readFile = function () {
+            $("#spinnerContainer").show();
+            var reader = new FileReader();
+            reader.onload = function () {
+
+                // var test2 = csvJSON(reader.result);
+                // var test = csvJSON(reader.result.trim());
+                // var raw_data = csvJSON(reader.result.trim());
+                // var filtered_data = filterData(raw_data);
+                // console.log("filtered_data", JSON.stringify(filtered_data));
+                // createTable(filtered_data);
+                // console.log(reader.result);
+                console.log(JSON.parse(reader.result));
+                var data = JSON.parse(reader.result).responses[0].value;
+                console.log("data", data);
+                var filtered_data = filterData2(data);
+                console.log(JSON.stringify(filtered_data));
+                storeData(data);
+                createTable(filtered_data);
+            };
+            // start reading the file. When it is done, calls the onload event defined above.
+            reader.readAsText(fileInput.files[0]);
+        };
+        function storeData(data){
+            if (typeof(Storage) !== "undefined") {
+                localStorage.tableData = JSON.stringify(data);
+            } else {
+            console.log("Sorry! No Web Storage support..");
+            }
+        }
+        function updateStoredData(data){
+            if (typeof(Storage) !== "undefined") {
+                localStorage.tableData = JSON.stringify(data);
+            } else {
+            console.log("Sorry! No Web Storage support..");
+            }
+        }
+
+        fileInput.addEventListener('change', readFile);
+
+        // });
+        
+        function createPaymentCell(payment) {
+            var payment_method = {
+                unknown: {
+                    active: "",
+                    checked: ""
+                },
+                cash: {
+                    active: "",
+                    checked: ""
+                },
+                revolut: {
+                    active: "",
+                    checked: ""
+                },
+                twint: {
+                    active: "",
+                    checked: ""
+                }
+            }
+            payment_method[payment].active = "active";
+            payment_method[payment].checked = "checked";
+            return '<div class="btn-group btn-group-toggle special" data-toggle="buttons">' +
+                '<label class="btn btn-light unknown ' + payment_method.unknown.active + '"><input type="radio" name="options" id="option1" autocomplete="off" value="unknown" ' + payment_method.unknown.checked + '><span><i class="far fa-question-circle"></i></span></label>' +
+                '<label class="btn btn-light cash ' + payment_method.cash.active + '"><input type="radio" name="options" id="option2" autocomplete="off" value="cash" ' + payment_method.cash.checked + '><span><i class="fas fa-dollar-sign"></i></span></label>' +
+                '<label class="btn btn-light revolut ' + payment_method.revolut.active + '"><input type="radio" name="options" id="option3" autocomplete="off" value="revolut" ' + payment_method.revolut.checked + '><img class="revolut_button" src="./icon-revolut.png"></label>' +
+                '<label class="btn btn-light twint ' + payment_method.twint.active + '"><input type="radio" name="options" id="option4" autocomplete="off" value="twint" ' + payment_method.twint.checked + '><img class="twint_button" src="./twint-logo.png"></label>' +
+                '</div>';
+        }
+        function count_payment_method() {
+            var table = $('#example').DataTable();
+            var table_data = table.data().toArray();
+
+            var counter = {
+                "cash": 0,
+                "revolut": 0,
+                "twint": 0
+            }
+            table_data.forEach(function(e){
+                counter[e.payment] += 1*(e.guest+1);
+            })
+            $(".cash_count").text(counter["cash"]);
+            $(".revolut_count").text(counter["revolut"]);
+            $(".twint_count").text(counter["twint"]);
+        }
+        function createTable(data) {
+            if ($.fn.DataTable.isDataTable('#example')) {
+                console.log("datatable exist already!!!!");
+                $('#example').DataTable().clear().destroy();
+            }
+                
+                var table = $('#example').DataTable({
+                    destroy: true,
+                    dom: '<"top"Bi>rt<"bottom"><"clear">',
+                    buttons: [
+                        {
+                            extend: 'print',
+                            exportOptions: { orthogonal: 'export' }
+                        },
+                        {
+                            text: "GET PDF",
+                            extend: 'pdfHtml5',
+                            exportOptions: { orthogonal: 'export' }
+                        }
+                    ],
+                    data: data,
+                    paging: false,
+                    // order: [[0, "asc"]],
+                    columnDefs: [
+                        // {
+                        //     targets: 0,
+                        //     title: "Pic",
+                        //     data: "photo",
+                        //     render: function (data, type, row) {
+                        //         // if (type === 'display' || type === 'filter') {
+                        //             return "<div class='circular'><img src=https://"+data+"></div>"
+                        //         // }
+                        //         // return data;
+                        //     }
+                        // },
+                        // {
+                        //     targets: 1,
+                        //     title: "Name",
+                        //     data: "name"
+                        // },
+                        {
+                            targets: 0,
+                            title: "Name",
+                            data: "member.name",
+                            // defaultContent:"",
+                            render: function (data, type, row, meta) {
+                                if (type === 'display') {
+
+                                    // console.log(row);
+                                    var hasGuest = row.guest > 0 ? "<div style='float:right;font-weight:900;font-size:25px;padding-left:15px;'>+" + row.guest + "</div>" : "";
+                                    if (data.photo === "lol") return "<div style='display:flex;align-items:center'><div class='circular'></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
+                                    else return "<div style='display:flex;align-items:center'><div class='circular'><img src=https://" + row.member.photo + "></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
+                                }
+                                if (type == "export" && row.guest !== 0) {
+                                    return row.name + " + " + row.guest;
+                                }
+                                return data;
+                            }
+                        },
+                        // {
+                        //     targets: 1,
+                        //     title: "Payment method",
+                        //     className: "paymentMethod",
+                        //     defaultContent: '<div class="btn-group btn-group-toggle special" data-toggle="buttons">' +
+                        //         '<label class="btn btn-light unknown active"><input type="radio" name="options" id="option1" autocomplete="off" value="unknown" checked><span><i class="far fa-question-circle"></i></span></label>' +
+                        //         '<label class="btn btn-light cash"><input type="radio" name="options" id="option2" autocomplete="off" value="cash"><span><i class="fas fa-dollar-sign"></i></span></label>' +
+                        //         '<label class="btn btn-light revolut"><input type="radio" name="options" id="option3" autocomplete="off" value="revolut"><img class="revolut_button" src="./icon-revolut.png"></label>' +
+                        //         '<label class="btn btn-light twint"><input type="radio" name="options" id="option4" autocomplete="off" value="twint"><img class="twint_button" src="./twint-logo.png"></label>' +
+                        //         '</div>',
+                        //     data: {
+                        //         _: "1.display",
+                        //         sort: "1.@data-order",
+                        //         type: "1.@data-order"
+                        //     },
+                        //     width: "50%",
+                        //     render: function (data, type, row, meta) {
+                        //         if (type == "export") {
+                        //             return row["1"]["@data-order"];
+                        //         }
+                        //         return data;
+                        //     },
+                        //     createdCell: function (td, cellData, rowData, row, col) {
+                        //         $(td).attr('data-order', "unknown");
+                        //     }
+                        // },
+                        {
+                            targets: 1,
+                            title: "Payment method",
+                            className: "paymentMethod",
+                            data: "payment",
+                            width: "50%",
+                            render: function (data, type, row, meta) {
+                                if (type == "display") {
+                                    console.log("row",row);
+                                    console.log("data",data);
+                                    console.log("row payment",row.payment);
+                                    return createPaymentCell(row.payment);
+                                }
+                                return data;
+                            }
+                            // createdCell: function (td, cellData, rowData, row, col) {
+                            //     $(td).attr('data-order', "unknown");
+                            // }
+                        },
+                    ]
+                });
+
+                // table.rows().invalidate('dom').draw();
+                var orderpayment = {
+                    "cash": 1,
+                    "revolut": 2,
+                    "twint": 3,
+                    "unknown": 4
+                }
+                function updateCell(element){
+                    let val = $(element).val();
+                    var parent = element.parentNode.parentNode.parentNode;
+                    var cell = table.cell( parent );
+                    cell.data( val );
+                    count_payment_method();
+                    updateStoredData(table.data().toArray());
+                    // var dt_data = table.data().toArray();
+                    // console.log(dt_data);
+                }
+                function recursiveEventHandler(element){
+                    $(element).find(".btn-group-toggle input:radio").on('change', function () {
+                        console.log("UPDATEEEEEED");
+                        var parent = this.parentNode.parentNode.parentNode;
+                        updateCell(this);
+                        recursiveEventHandler(parent);
+                    });
+                }
+
+                $(".btn-group-toggle input:radio").on('change', function () {
+                    // let val = $(this).val();
+                    // console.log("val", val);
+                    // var parent = this.parentNode.parentNode.parentNode;
+                    // console.log("parent",parent);
+                    // var cell = table.cell( parent );
+                    // cell.data( val );
+                    var parent = this.parentNode.parentNode.parentNode;
+                    updateCell(this);
+                    // .draw();
+
+                    // $(parent).attr("data-order", val);
+                    // table.row(parent.parentNode).invalidate('dom');
+
+                    // count_payment_method();
+                    // var dt_data = table.data().toArray();
+                    // console.log("dt_data",dt_data);
+                    recursiveEventHandler(parent);
+                    // console.log(parent);
+                    // $(parent).find(".btn-group-toggle input:radio").on('change', function () {
+                    //     console.log("UPDATEEEEEED")
+                    //     updateCell(this);
+                    // });
+
+                })
+                $("#spinnerContainer").hide();
+        }
+        
+        if(localStorage.tableData){
+            console.log(localStorage.tableData);
+            var localData = JSON.parse(localStorage.tableData);
+            console.log("localStorage.tableData",localData);
+            createTable(localData);
+            count_payment_method();
+        }
+
+    </script>
+
+
+</body>
+
+</html>

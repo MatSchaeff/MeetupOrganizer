@@ -568,7 +568,7 @@
                 console.log("data", data);
                 var filtered_data = filterData2(data);
                 console.log(JSON.stringify(filtered_data));
-                storeData(data);
+                storeData(filtered_data);
                 createTable(filtered_data);
             };
             // start reading the file. When it is done, calls the onload event defined above.

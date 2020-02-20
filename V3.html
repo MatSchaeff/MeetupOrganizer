@@ -1,0 +1,661 @@
+<html>
+
+<head>
+    <title>Meetup Organizer</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <script src="jquery.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!-- <script src="https://kit.fontawesome.com/8f99321293.js" crossorigin="anonymous"></script> -->
+    <link href="./fontAwesome/css/fontawesome.min.css" rel="stylesheet">
+    <!-- <link href="./fontAwesome/css/brands.css" rel="stylesheet"> -->
+    <link href="./fontAwesome/css/solid.min.css" rel="stylesheet">
+    <link href="./fontAwesome/css/regular.min.css" rel="stylesheet">
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src="./momentjs.fr.js"></script>
+</head>
+<style>
+    .dataTables_info {
+        float: left;
+        padding-top: 10px !important;
+    }
+
+    #example_filter {
+        float: right;
+    }
+
+    .dt-buttons {
+        float: left;
+        margin-bottom: 5px;
+        margin-right: 5px;
+    }
+
+    tbody td.paymentMethod {
+        padding: 0px;
+        background-color: #eee;
+    }
+
+    td .btn-group {
+        width: 100%;
+    }
+
+    .btn-group.special {
+        display: flex;
+    }
+
+    .special .btn {
+        flex: 1
+    }
+
+    .btn-payment {
+        color: #fff;
+        background-color: #adb6bd;
+        border-color: #adb6bd;
+    }
+
+    .btn-light:not(:disabled):not(.disabled),
+    .btn-light:not(:disabled):not(.disabled),
+    .show>.btn-light.dropdown-toggle {
+        color: #999;
+        background-color: #ddd;
+        border-color: #ddd;
+    }
+
+    .btn-group .btn-light:hover {
+        color: #aaa;
+        background-color: #e6e6e6;
+        border-color: #e6e6e6;
+    }
+
+    .btn-light:not(:disabled):not(.disabled) img {
+        filter: grayscale(100%);
+    }
+
+    .btn-light:not(:disabled):not(.disabled).active img {
+        filter: grayscale(0%);
+    }
+
+    .btn-light:not(:disabled):not(.disabled).active,
+    .btn-light:not(:disabled):not(.disabled):active,
+    .show>.btn-light.dropdown-toggle {
+        color: black;
+        background-color: white;
+        border-color: white;
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .cash:not(:disabled):not(.disabled).active,
+    .cash:not(:disabled):not(.disabled):active,
+    .show>.cash.dropdown-toggle {
+        color: darkviolet;
+        background-color: white;
+        border-color: white;
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+        background-color: #f3f3f3;
+        font-family: "Helvetica";
+    }
+
+
+    #tableContainer,
+    #formContainer {
+        background-color: white;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        margin: 20px 0px;
+        border-radius: 2px;
+    }
+
+    #tableContainer {
+        padding: 30px;
+    }
+
+    #formContainer {
+        border: 0px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    #meetupHeader {
+        background-image: url("./Badminton.jpg");
+        height: 350px;
+        background-position-y: -200px;
+        background-position-x: 60%;
+
+
+        /* Create the parallax scrolling effect */
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1)
+    }
+
+    #meetupHeader>div,
+    body>div.row {
+        margin: 0px;
+    }
+
+    #div2 {
+        padding: 0px;
+    }
+
+
+    h1 {
+        font-size: 42px;
+        text-align: left;
+        border-bottom: 1px solid black;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    h2 {
+        font-size: 26px;
+        text-align: left;
+    }
+
+    #headerTitle {
+        display: inline-block;
+    }
+
+    .titleBig {
+        font-size: 68px;
+    }
+
+    .pc_cell,
+    .pc_cell_header {
+        padding: 6px;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .pc_cell_header {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .pc_cell {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .pc_cell.cash_count {
+        background-color: darkviolet;
+        color: white;
+    }
+
+    .pc_cell.revolut_count {
+        background-color: #01cef2;
+        color: white;
+    }
+
+    .pc_cell.twint_count {
+        background-color: #01d76f;
+        color: white;
+    }
+
+    #paymentCounter {
+        width: 200px;
+        float: right;
+        text-align: center;
+        display: flex;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+
+    #paymentCounter>div {
+        flex: 1
+    }
+
+    .sp {
+        width: 32px;
+        height: 32px;
+        clear: both;
+        margin: 20px auto;
+    }
+
+    /* Spinner Circle Rotation */
+    .sp-circle {
+        border: 4px rgba(0, 0, 0, 0.25) solid;
+        border-top: 4px black solid;
+        border-radius: 50%;
+        -webkit-animation: spCircRot .6s infinite linear;
+        animation: spCircRot .6s infinite linear;
+    }
+
+    @-webkit-keyframes spCircRot {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(359deg);
+        }
+    }
+
+    @keyframes spCircRot {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(359deg);
+        }
+    }
+
+    #spinnerContainer {
+        display: none;
+    }
+
+    #example {
+        font-size: 20px;
+        height: 100%;
+    }
+
+    #example td {
+        /* font-size:20px; */
+        height: 100%;
+    }
+
+    #example .btn-group {
+        /* font-size:20px; */
+        height: 100%;
+    }
+
+    #example label.btn {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    td i {
+        font-size: 42px;
+    }
+
+    td .revolut_button {
+        width: 42px;
+    }
+
+    td .twint_button {
+        width: 38px;
+    }
+
+    @media only screen and (max-width: 992px) {
+        tr td:not(:last-child) {
+            padding: 30px 12px;
+            font-size: 30px;
+        }
+
+        td i {
+            font-size: 42px;
+        }
+
+        td .revolut_button {
+            width: 42px;
+        }
+
+        td .twint_button {
+            width: 38px;
+        }
+        body{
+            font-size:22px;
+        }
+    }
+
+    .circular {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .circular img {
+        min-width: 100%;
+        min-height: 100%;
+        max-width: 120%;
+        width: auto;
+        height: auto;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+<body>
+    <div id="meetupHeader" style="text-align: center;">
+        <div class="row">
+            <div class="col-lg-5 offset-lg-2 col-md-6 offset-md-3 col-sm-12">
+
+
+                <div id="headerTitle">
+                    <h1><span class="titleBig">G</span>eneva <br><span class="titleBig">S</span>ports<br> <span
+                            class="titleBig">C</span>lub</h1>
+                    <h2>Meetup Online Organizer</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div id="div2" class="col-md-12 col-sm-12 col-lg-8">
+            <div id="formContainer" class="card mb-12">
+                <div class="row no-gutters">
+                    <div class="col-md-2 col-sm-12">
+                        <div
+                            style="display: flex;justify-content: center;align-items: center; height:100%;background-color: #8bcea9;">
+                            <span style="padding:15px;"><i style="font-size: 72px;"
+                                    class="fas fa-file-import"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-10 col-sm-12">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-weight:700;">Import list of players from Meetup</h5>
+                            <div class="col-md-10 col-sm-12">
+                                  <div class="input-group">
+                                    <select class="custom-select" id="dropDownList">
+                                      <option value="" selected>Choose an event...</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                      <button id="eventIdButton" class="btn btn-success" type="button">Import</button>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tableContainer">
+                <div style="margin-bottom:20px;height:40px;">
+                    <div id="paymentCounter">
+                        <div>
+                            <div class="pc_cell_header">
+                                <span style="color:darkviolet"><i style="font-size: 24px;"
+                                        class="fas fa-dollar-sign"></i></span>
+                            </div>
+                            <div class="pc_cell cash_count">0</div>
+                        </div>
+                        <div>
+                            <div class="pc_cell_header">
+                                <img style="width:24px" src="./icon-revolut.png">
+                            </div>
+                            <div class="pc_cell revolut_count">0</div>
+                        </div>
+                        <div>
+                            <div class="pc_cell_header">
+                                <img style="width:21px" src="./twint-logo.png">
+                            </div>
+                            <div class="pc_cell twint_count">0</div>
+                        </div>
+                    </div>
+                    <h4 style="font-weight:700;">List of players</h4>
+                </div>
+                <div id="spinnerContainer">
+                    <div class="sp sp-circle"></div>
+                </div>
+                <table id="example" class="table table-striped table-bordered" width="100%"></table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        test = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees?queries=(endpoint:Geneva-Badminton-Club/events/267809487/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers,pay_status,self,web_actions,attendance_status%27,only:%27answers,response,attendance_status,guests,member,pay_status,updated%27,order:time),ref:eventAttendees_Geneva-Badminton-Club_267809487,type:attendees)";
+        test = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees.json?queries=(endpoint:Geneva-Badminton-Club/events/267729284/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers%27,only:%27answers,response,guests,member,updated%27,order:time),ref:eventAttendees_Geneva-Badminton-Club_267729284,type:attendees)"
+        test = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees.json?queries=(endpoint:Geneva-Badminton-Club/events/267107077/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers%27,only:%27answers,response,guests,member,updated%27,order:time),ref:eventAttendees_Geneva-Badminton-Club_267107077,type:attendees)"
+        
+        test = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/list_of_events.json";
+        
+        $.getJSON(test, function (data) {
+            console.log("amazon test : ", data);
+            $.each(data, function (index, item) {
+                var event_display = item.local_date + " : " + item.name;
+                $('#dropDownList').append(
+                    $('<option></option>').val(item.id).html(event_display)
+                );
+            });
+        });
+
+        var fileInput = document.getElementById("filename");
+        function csvJSON(csv) {
+            var lines = csv.split("\n");
+            var result = [];
+            var headers = lines[0].split("\t");
+            for (var i = 1; i < lines.length; i++) {
+                var obj = {};
+                var currentline = lines[i].split("\t");
+                for (var j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = currentline[j];
+                }
+                result.push(obj);
+            }
+            // return JSON.stringify(result); //JSON
+            return result; //JSON
+        }
+
+        function filterData(data) {
+            return data.map(function (d) {
+                return {
+                    "Name": d["Name"],
+                    "Date": moment(d["RSVPed on"], "MMMM DD, YYYY HH:mm a").unix()
+                }
+            })
+        }
+        function filterData2(data) {
+            return data
+                .filter(function (d) {
+                    return d.response === "yes"
+                })
+                .map(function (d) {
+                    return {
+                        "name": d.member.name,
+                        "guest": d.guests,
+                        "date": d.updated / 1000,
+                        "photo": d.member.photo ? d.member.photo.photo_link.substring(8, d.member.photo.photo_link.length) : "",
+                        "member": {
+                            "name": d.member.name,
+                            "photo": d.member.photo ? d.member.photo.photo_link.substring(8, d.member.photo.photo_link.length) : "lol",
+                        },
+                        "payment": "unknown"
+                    }
+                })
+        }
+
+        $("#eventIdButton").click(function () {
+
+            console.log("button clicked");
+            var id_selected = $("#dropDownList").val();
+            if(id_selected){
+                console.log("id_selected",id_selected);
+                url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/eventJSONs/"+id_selected+".json";
+                $.getJSON(url, function (rawData) {
+                    var data = rawData.responses[0].value;
+                    console.log("data", data);
+                    var filtered_data = filterData2(data);  
+                    storeData(filtered_data);
+                    createTable(filtered_data);
+                });
+            }
+        });
+
+        function storeData(data){
+            if (typeof(Storage) !== "undefined") {
+                localStorage.tableData = JSON.stringify(data);
+            } else {
+            console.log("Sorry! No Web Storage support..");
+            }
+        }
+        function updateStoredData(data){
+            if (typeof(Storage) !== "undefined") {
+                localStorage.tableData = JSON.stringify(data);
+            } else {
+            console.log("Sorry! No Web Storage support..");
+            }
+        }
+        
+        function createPaymentCell(payment) {
+            var payment_method = {
+                unknown: {
+                    active: "",
+                    checked: ""
+                },
+                cash: {
+                    active: "",
+                    checked: ""
+                },
+                revolut: {
+                    active: "",
+                    checked: ""
+                },
+                twint: {
+                    active: "",
+                    checked: ""
+                }
+            }
+            payment_method[payment].active = "active";
+            payment_method[payment].checked = "checked";
+            return '<div class="btn-group btn-group-toggle special" data-toggle="buttons">' +
+                '<label class="btn btn-light unknown ' + payment_method.unknown.active + '"><input type="radio" name="options" id="option1" autocomplete="off" value="unknown" ' + payment_method.unknown.checked + '><span><i class="far fa-question-circle"></i></span></label>' +
+                '<label class="btn btn-light cash ' + payment_method.cash.active + '"><input type="radio" name="options" id="option2" autocomplete="off" value="cash" ' + payment_method.cash.checked + '><span><i class="fas fa-dollar-sign"></i></span></label>' +
+                '<label class="btn btn-light revolut ' + payment_method.revolut.active + '"><input type="radio" name="options" id="option3" autocomplete="off" value="revolut" ' + payment_method.revolut.checked + '><img class="revolut_button" src="./icon-revolut.png"></label>' +
+                '<label class="btn btn-light twint ' + payment_method.twint.active + '"><input type="radio" name="options" id="option4" autocomplete="off" value="twint" ' + payment_method.twint.checked + '><img class="twint_button" src="./twint-logo.png"></label>' +
+                '</div>';
+        }
+        function count_payment_method() {
+            var table = $('#example').DataTable();
+            var table_data = table.data().toArray();
+
+            var counter = {
+                "cash": 0,
+                "revolut": 0,
+                "twint": 0
+            }
+            table_data.forEach(function(e){
+                counter[e.payment] += 1*(e.guest+1);
+            })
+            $(".cash_count").text(counter["cash"]);
+            $(".revolut_count").text(counter["revolut"]);
+            $(".twint_count").text(counter["twint"]);
+        }
+        function createTable(data) {
+            if ($.fn.DataTable.isDataTable('#example')) {
+                console.log("datatable exist already!!!!");
+                $('#example').DataTable().clear().destroy();
+            }
+                
+                var table = $('#example').DataTable({
+                    destroy: true,
+                    dom: '<"top"Bi>rt<"bottom"><"clear">',
+                    buttons: [
+                        {
+                            extend: 'print',
+                            exportOptions: { orthogonal: 'export' }
+                        },
+                        {
+                            text: "GET PDF",
+                            extend: 'pdfHtml5',
+                            exportOptions: { orthogonal: 'export' }
+                        }
+                    ],
+                    data: data,
+                    paging: false,
+                    columnDefs: [
+                        {
+                            targets: 0,
+                            title: "Name",
+                            data: "member.name",
+                            // defaultContent:"",
+                            render: function (data, type, row, meta) {
+                                if (type === 'display') {
+
+                                    // console.log(row);
+                                    var hasGuest = row.guest > 0 ? "<div style='float:right;font-weight:900;font-size:25px;padding-left:15px;'>+" + row.guest + "</div>" : "";
+                                    if (data.photo === "lol") return "<div style='display:flex;align-items:center'><div class='circular'></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
+                                    else return "<div style='display:flex;align-items:center'><div class='circular'><img src=https://" + row.member.photo + "></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
+                                }
+                                if (type == "export" && row.guest !== 0) {
+                                    return row.name + " + " + row.guest;
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            targets: 1,
+                            title: "Payment method",
+                            className: "paymentMethod",
+                            data: "payment",
+                            width: "60%",
+                            render: function (data, type, row, meta) {
+                                if (type == "display") {
+                                    // console.log("row",row);
+                                    // console.log("data",data);
+                                    // console.log("row payment",row.payment);
+                                    return createPaymentCell(row.payment);
+                                }
+                                return data;
+                            }
+                        },
+                    ]
+                });
+
+                var orderpayment = {
+                    "cash": 1,
+                    "revolut": 2,
+                    "twint": 3,
+                    "unknown": 4
+                }
+                function updateCell(element){
+                    let val = $(element).val();
+                    var parent = element.parentNode.parentNode.parentNode;
+                    var cell = table.cell( parent );
+                    cell.data( val );
+                    count_payment_method();
+                    updateStoredData(table.data().toArray());
+                }
+                function recursiveEventHandler(element){
+                    $(element).find(".btn-group-toggle input:radio").on('change', function () {
+                        console.log("UPDATEEEEEED");
+                        var parent = this.parentNode.parentNode.parentNode;
+                        updateCell(this);
+                        recursiveEventHandler(parent);
+                    });
+                }
+
+                $(".btn-group-toggle input:radio").on('change', function () {
+                    var parent = this.parentNode.parentNode.parentNode;
+                    updateCell(this);
+                    recursiveEventHandler(parent);
+                })
+                $("#spinnerContainer").hide();
+
+                table.draw();
+        }
+        
+        if(localStorage.tableData){
+            // console.log(localStorage.tableData);
+            var localData = JSON.parse(localStorage.tableData);
+            // console.log("localStorage.tableData",localData);
+            createTable(localData);
+            count_payment_method();
+        }
+
+    </script>
+
+
+</body>
+
+</html>

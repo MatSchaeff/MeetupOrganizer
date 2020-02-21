@@ -3,7 +3,6 @@
 <head>
     <title>Meetup Organizer</title>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
     <script src="jquery.js"></script>
@@ -312,6 +311,12 @@
         body{
             font-size:22px;
         }
+        .card-body{
+            font-size:24px;
+        }
+        .card-title{
+            font-size:28px;
+        }
     }
 
     .circular {
@@ -335,6 +340,15 @@
         -moz-transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
+    }
+    #eventIdButton,#groupIdButton{
+        width:150px;
+    }
+    .custom-select{
+        height:48px;
+    }
+    .card-body{
+        font-size:20px;
     }
 </style>
 
@@ -367,14 +381,24 @@
                         <div class="card-body">
                             <h5 class="card-title" style="font-weight:700;">Import list of players from Meetup</h5>
                             <div class="col-md-10 col-sm-12">
-                                  <div class="input-group">
+                                <div class="input-group  input-group-lg" style="margin:15px 0px">
+                                    <select class="custom-select" id="groupList">
+                                        <option value="" selected>Choose a group...</option>
+                                        <option value="badminton_events">Geneva Badminton Club</option>
+                                        <option value="sports_events" >Geneva Sports Club</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                      <button id="groupIdButton" class="btn btn-success" type="button">Load events</button>
+                                    </div>
+                                </div>
+                                <div class="input-group  input-group-lg" style="margin:15px 0px">
                                     <select class="custom-select" id="dropDownList">
                                       <option value="" selected>Choose an event...</option>
                                     </select>
                                     <div class="input-group-append">
-                                      <button id="eventIdButton" class="btn btn-success" type="button">Import</button>
+                                      <button id="eventIdButton" class="btn btn-success" type="button">Load players</button>
                                     </div>
-                                  </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -421,17 +445,41 @@
         
         test = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/list_of_events.json";
         
-        $.getJSON(test, function (data) {
-            console.log("amazon test : ", data);
-            $.each(data, function (index, item) {
-                var event_display = item.local_date + " : " + item.name;
-                $('#dropDownList').append(
-                    $('<option></option>').val(item.id).html(event_display)
-                );
-            });
+        $("#groupIdButton").click(function () {
+            console.log("button clicked");
+            var group_selected = $("#groupList").val();
+            if(group_selected){
+                console.log("group_selected",group_selected);
+                url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/"+group_selected+".json";
+                $.getJSON(url, function (data) {
+                    console.log("amazon test : ", data);
+                    $.each(data, function (index, item) {
+                        var event_display = item.local_date + " : " + item.name;
+                        $('#dropDownList').append(
+                            $('<option></option>').val(item.id).html(event_display)
+                        );
+                    });
+                });
+            };
         });
 
-        var fileInput = document.getElementById("filename");
+
+        $("#eventIdButton").click(function () {
+            console.log("button clicked");
+            var id_selected = $("#dropDownList").val();
+            if(id_selected){
+                console.log("id_selected",id_selected);
+                url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/eventJSONs/"+id_selected+".json";
+                $.getJSON(url, function (rawData) {
+                    var data = rawData.responses[0].value;
+                    console.log("data", data);
+                    var filtered_data = filterData2(data);  
+                    storeData(filtered_data);
+                    createTable(filtered_data);
+                });
+            }
+        });
+
         function csvJSON(csv) {
             var lines = csv.split("\n");
             var result = [];
@@ -475,23 +523,6 @@
                     }
                 })
         }
-
-        $("#eventIdButton").click(function () {
-
-            console.log("button clicked");
-            var id_selected = $("#dropDownList").val();
-            if(id_selected){
-                console.log("id_selected",id_selected);
-                url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/eventJSONs/"+id_selected+".json";
-                $.getJSON(url, function (rawData) {
-                    var data = rawData.responses[0].value;
-                    console.log("data", data);
-                    var filtered_data = filterData2(data);  
-                    storeData(filtered_data);
-                    createTable(filtered_data);
-                });
-            }
-        });
 
         function storeData(data){
             if (typeof(Storage) !== "undefined") {

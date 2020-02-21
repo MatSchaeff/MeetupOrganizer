@@ -3,6 +3,7 @@
 <head>
     <title>Meetup Organizer</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
     <script src="jquery.js"></script>
@@ -105,6 +106,7 @@
     body {
         background-color: #f3f3f3;
         font-family: "Helvetica";
+        width: 100%;
     }
 
 
@@ -178,7 +180,7 @@
     .pc_cell,
     .pc_cell_header {
         padding: 6px;
-        font-size: 18px;
+        /* font-size: 18px; */
         font-weight: 700;
     }
 
@@ -255,20 +257,34 @@
 
     #spinnerContainer {
         display: none;
+        padding-top:30px;
+    }
+    #spinnerContainer2{
+        display:none;
+    }
+    #second_form{
+        display:none;
     }
 
     #example {
-        font-size: 20px;
-        height: 100%;
+        /* height: 100%; */
     }
 
     #example td {
-        /* font-size:20px; */
-        height: 100%;
+        height: 2em;
+
+
+    }
+
+    /* #example tr{
+        display:flex;
+    } */
+    #example tbody .paymentMethod {
+        padding-bottom: 0px;
+        margin-bottom: 0px;
     }
 
     #example .btn-group {
-        /* font-size:20px; */
         height: 100%;
     }
 
@@ -279,20 +295,28 @@
         align-items: center;
     }
 
+    #example td {
+        font-size: 1.5em;
+    }
+
     td i {
-        font-size: 42px;
+        font-size: 2em;
     }
 
     td .revolut_button {
-        width: 42px;
+        /* width: 42px; */
+        /* width:30%; */
+        width: 2em;
     }
 
     td .twint_button {
-        width: 38px;
+        /* width: 38px; */
+        /* width:30%; */
+        width: 2em;
     }
 
-    @media only screen and (max-width: 992px) {
-        tr td:not(:last-child) {
+
+    /*    tr td:not(:last-child) {
             padding: 30px 12px;
             font-size: 30px;
         }
@@ -317,14 +341,17 @@
         .card-title{
             font-size:28px;
         }
-    }
+    } */
 
     .circular {
-        width: 100px;
-        height: 100px;
+        /* width: 100px;
+        height: 100px; */
+        width: 3em;
+        height: 3em;
         border-radius: 50%;
         position: relative;
         overflow: hidden;
+        flex-shrink: 0;
     }
 
     .circular img {
@@ -341,16 +368,114 @@
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
     }
-    #eventIdButton,#groupIdButton{
-        width:150px;
-    }
-    .custom-select{
-        height:48px;
-    }
-    .card-body{
-        font-size:20px;
+
+    .hasGuest {
+        font-weight: 900;
+        padding-left: 1em;
     }
 
+    .player_name {
+        padding-left: 1em;
+        flex-grow: 1;
+    }
+
+    #eventIdButton,
+    #groupIdButton {
+        width: 120px;
+    }
+
+    .special>.btn {
+        margin-bottom: 0;
+    }
+
+    .special>.btn input[type=radio] {
+        position: absolute;
+        clip: rect(0, 0, 0, 0);
+        pointer-events: none;
+    }
+
+    /* .custom-select{
+        height:48px;
+    } */
+    /* .card-body{ */
+    /* font-size:20px; */
+    /* } */
+    @media only screen and (max-width: 992px) {
+        #tableContainer {
+            padding: 0px;
+        }
+
+        .circular {
+            width: 3em;
+            height: 3em;
+        }
+
+        #example td {
+            font-size: 1em;
+        }
+
+        td i {
+            font-size: 1.5em;
+        }
+
+        td .revolut_button {
+            width: 1.5em;
+        }
+
+        td .twint_button {
+            width: 1.5em;
+        }
+    }
+
+    .bottom .dt-buttons {
+        float: right;
+    }
+
+    .eventInfo {
+        display: flex;
+        align-items: center;
+        padding-top: 15px;
+        font-weight: 700;
+    }
+
+    .eventName {
+        margin: 0px;
+        padding-left: 5px;
+    }
+
+    .eventName p {
+        margin: 0px;
+        font-size: 1.1em;
+    }
+
+    .eventName i {
+        margin-right: 5px;
+        font-size: 1.2em;
+    }
+
+    #event_name {
+        font-size: 0.9em;
+        font-style: italic;
+    }
+
+    .eventCount {
+        font-size: 1.3em;
+        flex-grow: 1;
+        text-align: right;
+        margin-right: 5px;
+    }
+
+    .eventCount i,
+    .eventCount span {
+        margin-left: 5px;
+    }
+
+    /* .eventCount i{
+        color:#28a745;
+    } */
+    /* .eventName p, .eventCount p{
+        
+    } */
 </style>
 
 <body>
@@ -382,22 +507,29 @@
                         <div class="card-body">
                             <h5 class="card-title" style="font-weight:700;">Import list of players from Meetup</h5>
                             <div class="col-md-10 col-sm-12">
-                                <div class="input-group  input-group-lg" style="margin:15px 0px">
+                                <div class="input-group" style="margin:15px 0px">
                                     <select class="custom-select" id="groupList">
                                         <option value="" selected>Choose a group...</option>
                                         <option value="badminton_events">Geneva Badminton Club</option>
-                                        <option value="sports_events" >Geneva Sports Club</option>
+                                        <option value="sports_events">Geneva Sports Club</option>
                                     </select>
                                     <div class="input-group-append">
-                                      <button id="groupIdButton" class="btn btn-success" type="button">Load events</button>
+                                        <button id="groupIdButton" class="btn btn-success" type="button">Load
+                                            events</button>
                                     </div>
                                 </div>
-                                <div class="input-group  input-group-lg" style="margin:15px 0px">
-                                    <select class="custom-select" id="dropDownList">
-                                      <option value="" selected>Choose an event...</option>
-                                    </select>
-                                    <div class="input-group-append">
-                                      <button id="eventIdButton" class="btn btn-success" type="button">Load players</button>
+                                <div id="spinnerContainer2">
+                                    <div class="sp sp-circle"></div>
+                                </div>
+                                <div id="second_form">
+                                    <div class="input-group" style="margin:15px 0px">
+                                        <select class="custom-select" id="dropDownList">
+                                            <option value="" selected>Choose an event...</option>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button id="eventIdButton" class="btn btn-success" type="button">Load
+                                                players</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -429,12 +561,16 @@
                             <div class="pc_cell twint_count">0</div>
                         </div>
                     </div>
-                    <h4 style="font-weight:700;">List of players</h4>
+                    <h5 style="font-weight:700;padding: 5px;">List of players</h5>
                 </div>
                 <div id="spinnerContainer">
                     <div class="sp sp-circle"></div>
                 </div>
-                <table id="example" class="table table-striped table-bordered" width="100%"></table>
+                <!-- <div class="row"> -->
+                <div class="table-responsive">
+                    <table id="example" class="table table-striped table-bordered"></table>
+                </div>
+                <!-- </div> -->
             </div>
         </div>
     </div>
@@ -443,30 +579,38 @@
         test = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees?queries=(endpoint:Geneva-Badminton-Club/events/267809487/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers,pay_status,self,web_actions,attendance_status%27,only:%27answers,response,attendance_status,guests,member,pay_status,updated%27,order:time),ref:eventAttendees_Geneva-Badminton-Club_267809487,type:attendees)";
         test = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees.json?queries=(endpoint:Geneva-Badminton-Club/events/267729284/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers%27,only:%27answers,response,guests,member,updated%27,order:time),ref:eventAttendees_Geneva-Badminton-Club_267729284,type:attendees)"
         test = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees.json?queries=(endpoint:Geneva-Badminton-Club/events/267107077/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers%27,only:%27answers,response,guests,member,updated%27,order:time),ref:eventAttendees_Geneva-Badminton-Club_267107077,type:attendees)"
-        
+
         test = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/list_of_events.json";
 
         group_selected = "";
         id_selected = "";
-        
+        event_selected = "";
+
         $("#groupIdButton").click(function () {
             console.log("button clicked");
             group_selected = $("#groupList").val();
-            if(group_selected){
-                console.log("group_selected",group_selected);
-                url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/"+group_selected+".json";
+            if (group_selected) {
+                console.log("group_selected", group_selected);
+                $("#second_form").hide();
+                $("#spinnerContainer2").show();
+                url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/" + group_selected + ".json";
                 $.getJSON(url, function (data) {
-                    console.log("amazon test : ", data);
-                    $('#dropDownList')
-                    .empty()
-                    .append('<option value="" selected>Choose an event...</option>');
-                    $.each(data, function (index, item) {
-                        var event_display = item.local_date + " : " + item.name;
-                        $('#dropDownList').append(
-                            $('<option></option>').val(item.id).html(event_display)
-                        );
-                    });
+                    setTimeout(function () {
+                        console.log("amazon test : ", data);
+                        $("#second_form").show();
+                        $("#spinnerContainer2").hide();
+                        $('#dropDownList')
+                            .empty()
+                            .append('<option value="" selected>Choose an event...</option>');
+                        $.each(data, function (index, item) {
+                            var event_display = item.local_date + " : " + item.name;
+                            $('#dropDownList').append(
+                                $('<option></option>').val(item.id).html(event_display)
+                            );
+                        });
+                    },500);
                 });
+                
             };
         });
 
@@ -474,16 +618,19 @@
         $("#eventIdButton").click(function () {
             console.log("button clicked");
             id_selected = $("#dropDownList").val();
-            if(id_selected){
-                console.log("id_selected",id_selected);
-                url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/"+group_selected+"/"+id_selected+".json";
+            event_selected = $("#dropDownList option:selected").text();
+            console.log("event_selected", event_selected)
+            if (id_selected) {
+                console.log("id_selected", id_selected);
+                url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/" + group_selected + "/" + id_selected + ".json";
                 $.getJSON(url, function (rawData) {
                     var data = rawData.responses[0].value;
                     console.log("data", data);
-                    var filtered_data = filterData2(data);  
+                    var filtered_data = filterData2(data);
                     storeData(filtered_data);
+                    storeEventName(event_selected);
                     createTable(filtered_data);
-                    count_payment_method();
+                    // count_payment_method();
                 });
             }
         });
@@ -532,21 +679,24 @@
                 })
         }
 
-        function storeData(data){
-            if (typeof(Storage) !== "undefined") {
+        function storeData(data) {
+            if (typeof (Storage) !== "undefined") {
                 localStorage.tableData = JSON.stringify(data);
             } else {
-            console.log("Sorry! No Web Storage support..");
+                console.log("Sorry! No Web Storage support..");
             }
         }
-        function updateStoredData(data){
-            if (typeof(Storage) !== "undefined") {
-                localStorage.tableData = JSON.stringify(data);
+        function storeEventName(event) {
+            if (typeof (Storage) !== "undefined") {
+                localStorage.eventName = event_selected;
             } else {
-            console.log("Sorry! No Web Storage support..");
+                console.log("Sorry! No Web Storage support..");
             }
         }
-        
+        function updateStoredData(data) {
+            storeData(data);
+        }
+
         function createPaymentCell(payment) {
             var payment_method = {
                 unknown: {
@@ -568,11 +718,11 @@
             }
             payment_method[payment].active = "active";
             payment_method[payment].checked = "checked";
-            return '<div class="btn-group btn-group-toggle special" data-toggle="buttons">' +
-                '<label class="btn btn-light unknown ' + payment_method.unknown.active + '"><input type="radio" name="options" id="option1" autocomplete="off" value="unknown" ' + payment_method.unknown.checked + '><span><i class="far fa-question-circle"></i></span></label>' +
-                '<label class="btn btn-light cash ' + payment_method.cash.active + '"><input type="radio" name="options" id="option2" autocomplete="off" value="cash" ' + payment_method.cash.checked + '><span><i class="fas fa-dollar-sign"></i></span></label>' +
-                '<label class="btn btn-light revolut ' + payment_method.revolut.active + '"><input type="radio" name="options" id="option3" autocomplete="off" value="revolut" ' + payment_method.revolut.checked + '><img class="revolut_button" src="./icon-revolut.png"></label>' +
-                '<label class="btn btn-light twint ' + payment_method.twint.active + '"><input type="radio" name="options" id="option4" autocomplete="off" value="twint" ' + payment_method.twint.checked + '><img class="twint_button" src="./twint-logo.png"></label>' +
+            return '<div class="btn-group btn-group-toggle special">' +
+                '<label class="btn btn-light unknown ' + payment_method.unknown.active + '"><input type="radio" value="unknown" ' + payment_method.unknown.checked + '><span><i class="far fa-question-circle"></i></span></label>' +
+                '<label class="btn btn-light cash ' + payment_method.cash.active + '"><input type="radio" value="cash" ' + payment_method.cash.checked + '><span><i class="fas fa-dollar-sign"></i></span></label>' +
+                '<label class="btn btn-light revolut ' + payment_method.revolut.active + '"><input type="radio" value="revolut" ' + payment_method.revolut.checked + '><img class="revolut_button" src="./icon-revolut.png"></label>' +
+                '<label class="btn btn-light twint ' + payment_method.twint.active + '"><input type="radio" value="twint" ' + payment_method.twint.checked + '><img class="twint_button" src="./twint-logo.png"></label>' +
                 '</div>';
         }
         function count_payment_method() {
@@ -584,115 +734,153 @@
                 "revolut": 0,
                 "twint": 0
             }
-            table_data.forEach(function(e){
-                counter[e.payment] += 1*(e.guest+1);
+            table_data.forEach(function (e) {
+                counter[e.payment] += 1 * (e.guest + 1);
             })
             $(".cash_count").text(counter["cash"]);
             $(".revolut_count").text(counter["revolut"]);
             $(".twint_count").text(counter["twint"]);
+        }
+        function count_players() {
+            var table = $('#example').DataTable();
+            var table_data = table.data().toArray();
+            var player_count = 0;
+            console.log("table_data for count_players",table_data);
+            table_data.forEach(function (e) {
+                player_count += 1 + e.guest;
+            })
+            return player_count;
+        }
+        function updateEventTitle(event_name) {
+            event_title = "<p><i class='far fa-calendar-alt'></i>" + event_name.split(":")[0] + "</p><p id='event_name'>" + event_name.split(":")[1] + "</p>";
+            $(".eventName").html(event_title);
+        }
+        function updatePlayerCount(event_count) {
+            $(".eventCount").html("<i class='fas fa-users'></i><span>" + event_count + "</span>");
         }
         function createTable(data) {
             if ($.fn.DataTable.isDataTable('#example')) {
                 console.log("datatable exist already!!!!");
                 $('#example').DataTable().clear().destroy();
             }
-                
-                var table = $('#example').DataTable({
-                    destroy: true,
-                    dom: '<"top"Bi>rt<"bottom"><"clear">',
-                    buttons: [
-                        {
-                            extend: 'print',
-                            exportOptions: { orthogonal: 'export' }
-                        },
-                        {
-                            text: "GET PDF",
-                            extend: 'pdfHtml5',
-                            exportOptions: { orthogonal: 'export' }
+            
+            $("#spinnerContainer").show();
+            setTimeout(function () {
+
+            var table = $('#example').DataTable({
+                autoWidth: false,
+                destroy: true,
+                dom: '<"eventInfo"<"eventName"><"eventCount">><"">rtB',
+                buttons: [
+                    // {
+                    //     extend: 'print',
+                    //     exportOptions: { orthogonal: 'export' }
+                    // },
+                    {
+                        text: "GET PDF",
+                        extend: 'pdfHtml5',
+                        exportOptions: { orthogonal: 'export' }
+                    }
+                ],
+                data: data,
+                paging: false,
+                columnDefs: [
+                    {
+                        targets: 0,
+                        title: "Name",
+                        data: "member.name",
+                        width: "40%",
+                        // defaultContent:"",
+                        render: function (data, type, row, meta) {
+                            if (type === 'display') {
+
+                                // console.log(row);
+                                // var hasGuest = row.guest > 0 ? "<div style='float:right;font-weight:900;font-size:25px;padding-left:15px;'>+" + row.guest + "</div>" : "";
+                                var hasGuest = row.guest > 0 ? "<span class='hasGuest'>+" + row.guest + "</span>" : "";
+                                // if (data.photo) return "<div style='display:flex;align-items:center'><div class='circular'></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
+                                // else return "<div style='display:flex;align-items:center'><div class='circular'><img src=https://" + row.member.photo + "></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
+                                return "<div style='display:flex;align-items:center'><div class='circular'><img src=https://" + row.member.photo + "></div><div class='player_name'>" + row.member.name + hasGuest + "</div></div>";
+
+                            }
+                            if (type == "export" && row.guest !== 0) {
+                                return row.name + " + " + row.guest;
+                            }
+                            return data;
                         }
-                    ],
-                    data: data,
-                    paging: false,
-                    columnDefs: [
-                        {
-                            targets: 0,
-                            title: "Name",
-                            data: "member.name",
-                            // defaultContent:"",
-                            render: function (data, type, row, meta) {
-                                if (type === 'display') {
-
-                                    // console.log(row);
-                                    var hasGuest = row.guest > 0 ? "<div style='float:right;font-weight:900;font-size:25px;padding-left:15px;'>+" + row.guest + "</div>" : "";
-                                    if (data.photo) return "<div style='display:flex;align-items:center'><div class='circular'></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
-                                    else return "<div style='display:flex;align-items:center'><div class='circular'><img src=https://" + row.member.photo + "></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
-                                }
-                                if (type == "export" && row.guest !== 0) {
-                                    return row.name + " + " + row.guest;
-                                }
-                                return data;
+                    },
+                    {
+                        targets: 1,
+                        title: "Payment method",
+                        className: "paymentMethod",
+                        data: "payment",
+                        width: "60%",
+                        render: function (data, type, row, meta) {
+                            if (type == "display") {
+                                // console.log("row",row);
+                                // console.log("data",data);
+                                // console.log("row payment",row.payment);
+                                return createPaymentCell(row.payment);
                             }
-                        },
-                        {
-                            targets: 1,
-                            title: "Payment method",
-                            className: "paymentMethod",
-                            data: "payment",
-                            width: "60%",
-                            render: function (data, type, row, meta) {
-                                if (type == "display") {
-                                    // console.log("row",row);
-                                    // console.log("data",data);
-                                    // console.log("row payment",row.payment);
-                                    return createPaymentCell(row.payment);
-                                }
-                                return data;
-                            }
-                        },
-                    ]
-                });
+                            return data;
+                        }
+                    },
+                ]
+            });
 
-                var orderpayment = {
-                    "cash": 1,
-                    "revolut": 2,
-                    "twint": 3,
-                    "unknown": 4
-                }
-                function updateCell(element){
-                    let val = $(element).val();
-                    var parent = element.parentNode.parentNode.parentNode;
-                    var cell = table.cell( parent );
-                    cell.data( val );
-                    count_payment_method();
-                    updateStoredData(table.data().toArray());
-                }
-                function recursiveEventHandler(element){
-                    $(element).find(".btn-group-toggle input:radio").on('change', function () {
-                        console.log("UPDATEEEEEED");
-                        var parent = this.parentNode.parentNode.parentNode;
-                        updateCell(this);
-                        recursiveEventHandler(parent);
-                    });
-                }
-
-                $(".btn-group-toggle input:radio").on('change', function () {
+            var orderpayment = {
+                "cash": 1,
+                "revolut": 2,
+                "twint": 3,
+                "unknown": 4
+            }
+            function updateCell(element) {
+                let val = $(element).val();
+                var parent = element.parentNode.parentNode.parentNode;
+                var cell = table.cell(parent);
+                cell.data(val);
+                count_payment_method();
+                updateStoredData(table.data().toArray());
+            }
+            function recursiveEventHandler(element) {
+                $(element).find(".special input:radio").on('change', function () {
+                    console.log("UPDATEEEEEED");
                     var parent = this.parentNode.parentNode.parentNode;
                     updateCell(this);
                     recursiveEventHandler(parent);
-                })
-                $("#spinnerContainer").hide();
+                });
+            }
 
-                setTimeout(function () {
-                    $('#example').DataTable().draw();
-                }, 1000);
+            $(".special input:radio").on('change', function () {
+                var parent = this.parentNode.parentNode.parentNode;
+                updateCell(this);
+                recursiveEventHandler(parent);
+            })
+            // $("#spinnerContainer").hide();
+
+            updateEventTitle(event_selected);
+            updatePlayerCount(count_players());
+            // function updateEventTitle(event_name){
+            //     $(".eventName").html("<p>"+event_name+"</p>");
+            // }
+            // function updatePlayerCount(event_count){
+            //     $(".eventCount").html("<p>"+event_count+"</p>");
+            // }
+
+            // setTimeout(function () {
+            //     $('#example').DataTable().draw();
+            // }, 1000);
+            count_payment_method();
+            $("#spinnerContainer").hide();
+            }, 1000);
         }
-        
-        if(localStorage.tableData){
+
+        if (localStorage.tableData) {
             // console.log(localStorage.tableData);
             var localData = JSON.parse(localStorage.tableData);
+            event_selected = localStorage.eventName;
             // console.log("localStorage.tableData",localData);
             createTable(localData);
-            count_payment_method();
+            // count_payment_method();
         }
 
     </script>

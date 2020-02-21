@@ -32,7 +32,7 @@ function saveFile(data, filename){
 }
 
 function getUrl(id,type){
-    if(type=="bad"){
+    if(type=="badminton"){
         return "https://www.meetup.com/mu_api/urlname/events/eventId/attendees?queries=(endpoint:Geneva-Badminton-Club/events/"+id+"/rsvps,meta:(method:get),params:(desc:!t,fields:'answers,pay_status,self,web_actions,attendance_status',only:'answers,response,attendance_status,guests,member,pay_status,updated',order:time),ref:eventAttendees_Geneva-Badminton-Club,type:attendees)";
     }
     else{

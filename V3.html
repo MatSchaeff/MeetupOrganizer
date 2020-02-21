@@ -350,6 +350,7 @@
     .card-body{
         font-size:20px;
     }
+
 </style>
 
 <body>
@@ -444,15 +445,21 @@
         test = "https://www.meetup.com/mu_api/urlname/events/eventId/attendees.json?queries=(endpoint:Geneva-Badminton-Club/events/267107077/rsvps,meta:(method:get),params:(desc:!t,fields:%27answers%27,only:%27answers,response,guests,member,updated%27,order:time),ref:eventAttendees_Geneva-Badminton-Club_267107077,type:attendees)"
         
         test = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/list_of_events.json";
+
+        group_selected = "";
+        id_selected = "";
         
         $("#groupIdButton").click(function () {
             console.log("button clicked");
-            var group_selected = $("#groupList").val();
+            group_selected = $("#groupList").val();
             if(group_selected){
                 console.log("group_selected",group_selected);
                 url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/"+group_selected+".json";
                 $.getJSON(url, function (data) {
                     console.log("amazon test : ", data);
+                    $('#dropDownList')
+                    .empty()
+                    .append('<option value="" selected>Choose an event...</option>');
                     $.each(data, function (index, item) {
                         var event_display = item.local_date + " : " + item.name;
                         $('#dropDownList').append(
@@ -466,16 +473,17 @@
 
         $("#eventIdButton").click(function () {
             console.log("button clicked");
-            var id_selected = $("#dropDownList").val();
+            id_selected = $("#dropDownList").val();
             if(id_selected){
                 console.log("id_selected",id_selected);
-                url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/eventJSONs/"+id_selected+".json";
+                url = "http://ec2-35-178-171-7.eu-west-2.compute.amazonaws.com/myProject/"+group_selected+"/"+id_selected+".json";
                 $.getJSON(url, function (rawData) {
                     var data = rawData.responses[0].value;
                     console.log("data", data);
                     var filtered_data = filterData2(data);  
                     storeData(filtered_data);
                     createTable(filtered_data);
+                    count_payment_method();
                 });
             }
         });
@@ -517,7 +525,7 @@
                         "photo": d.member.photo ? d.member.photo.photo_link.substring(8, d.member.photo.photo_link.length) : "",
                         "member": {
                             "name": d.member.name,
-                            "photo": d.member.photo ? d.member.photo.photo_link.substring(8, d.member.photo.photo_link.length) : "lol",
+                            "photo": d.member.photo ? d.member.photo.photo_link.substring(8, d.member.photo.photo_link.length) : "",
                         },
                         "payment": "unknown"
                     }
@@ -616,7 +624,7 @@
 
                                     // console.log(row);
                                     var hasGuest = row.guest > 0 ? "<div style='float:right;font-weight:900;font-size:25px;padding-left:15px;'>+" + row.guest + "</div>" : "";
-                                    if (data.photo === "lol") return "<div style='display:flex;align-items:center'><div class='circular'></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
+                                    if (data.photo) return "<div style='display:flex;align-items:center'><div class='circular'></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
                                     else return "<div style='display:flex;align-items:center'><div class='circular'><img src=https://" + row.member.photo + "></div><div class='player_name' style='padding-left:30px;'>" + row.member.name + "</div>" + hasGuest + "</div>";
                                 }
                                 if (type == "export" && row.guest !== 0) {
@@ -674,7 +682,9 @@
                 })
                 $("#spinnerContainer").hide();
 
-                table.draw();
+                setTimeout(function () {
+                    $('#example').DataTable().draw();
+                }, 1000);
         }
         
         if(localStorage.tableData){
